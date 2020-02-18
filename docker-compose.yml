@@ -87,6 +87,10 @@ services:
         source: ./nginx-conf.d/
         target: /etc/nginx/conf.d/
 
+      - type: bind
+        source: ./django-data/
+        target: /var/uwsgi/
+
     # auto restart container
     restart: always
 

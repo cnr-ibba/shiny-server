@@ -5,3 +5,6 @@
 # ignoring application directory
 shiny-apps/
 mysql-data/
+
+# ignoring media directory
+django-data/shiny/media/
