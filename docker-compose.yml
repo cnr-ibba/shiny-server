@@ -1,28 +1,49 @@
 
-shiny:
-  # build shiny image
-  build: ./shiny
+version: "3.2"
+services:
+  shiny:
+    # build shiny image
+    build: ./shiny
 
-  # to export volume, as recommeded in https://registry.hub.docker.com/u/library/mysql/
-  volumes:
-    - "./shiny-apps:/srv/shiny-server/"
-    - "./shiny/shiny-server.conf:/etc/shiny-server/shiny-server.conf"
+    volumes:
+      - type: bind
+        source: ./shiny-apps
+        target: /srv/shiny-server/
 
-  # expose the shiny server ports
-  expose:
-    - "3838"
+      - type: volume
+        source: shiny-logs
+        target: /var/log/shiny-server/
 
-  # auto restart container
-  restart: always
+      - type: bind
+        source: ./shiny/shiny-server.conf
+        target: /etc/shiny-server/shiny-server.conf
 
-nginx:
-  image: "nginx:1.15"
-  ports:
-    - "22080:80"
-  links:
-    - shiny:shiny
-  volumes:
-    - ./nginx-conf.d/:/etc/nginx/conf.d/
+    # expose the shiny server ports
+    expose:
+      - "3838"
 
-  # auto restart container
-  restart: always
+    # auto restart container
+    restart: always
+
+  nginx:
+    image: "nginx:1.17"
+
+    ports:
+      - "22080:80"
+
+    links:
+      - shiny:shiny
+
+    volumes:
+      - type: bind
+        source: ./nginx-conf.d/
+        target: /etc/nginx/conf.d/
+
+    # auto restart container
+    restart: always
+
+networks:
+  default:
+
+volumes:
+  shiny-logs:

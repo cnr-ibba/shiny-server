@@ -1,9 +1,1 @@
-ggplot2
-dplyr
-ggvis
-XML
-plotly
-tidyverse
-anchors
-DT
-rdrop2
+shinydashboard
