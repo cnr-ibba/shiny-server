@@ -25,6 +25,27 @@ services:
     # auto restart container
     restart: always
 
+  db:
+    # get the latest mysql server
+    image: mariadb:10.5
+
+    # Set db environment
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      SHINY_DATABASE: ${SHINY_DATABASE}
+      SHINY_USER: ${SHINY_USER}
+      SHINY_PASSWORD: ${SHINY_PASSWORD}
+
+    # to export volume, as recommeded in https://registry.hub.docker.com/u/library/mysql/
+    volumes:
+      - type: bind
+        source: ./mysql-data/
+        target: /var/lib/mysql
+
+      - type: bind
+        source: ./docker-entrypoint-initdb.d/
+        target: /docker-entrypoint-initdb.d
+
   nginx:
     image: "nginx:1.17"
 

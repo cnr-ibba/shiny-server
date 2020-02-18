@@ -1,2 +1,7 @@
+
+# ignoring custom configuration file
+.env
+
 # ignoring application directory
 shiny-apps/
+mysql-data/

@@ -14,6 +14,11 @@ FROM rocker/shiny:3.6.1
 # The mainteiner of this image
 LABEL maintainer="Paolo Cozzi <paolo.cozzi@ibba.cnr.it"
 
+# synchronize timezone for container
+# https://forums.docker.com/t/synchronize-timezone-from-host-to-container/39116
+RUN echo "Europe/Rome" > /etc/timezone
+RUN dpkg-reconfigure -f noninteractive tzdata
+
 # install package dependencies
 RUN apt-get update && apt-get install -y \
     libssl-dev \
