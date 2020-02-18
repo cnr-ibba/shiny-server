@@ -1,0 +1,28 @@
+
+shiny:
+  # build shiny image
+  build: ./shiny
+
+  # to export volume, as recommeded in https://registry.hub.docker.com/u/library/mysql/
+  volumes:
+    - "./shiny-apps:/srv/shiny-server/"
+    - "./shiny/shiny-server.conf:/etc/shiny-server/shiny-server.conf"
+
+  # expose the shiny server ports
+  expose:
+    - "3838"
+
+  # auto restart container
+  restart: always
+
+nginx:
+  image: "nginx:1.15"
+  ports:
+    - "22080:80"
+  links:
+    - shiny:shiny
+  volumes:
+    - ./nginx-conf.d/:/etc/nginx/conf.d/
+
+  # auto restart container
+  restart: always
