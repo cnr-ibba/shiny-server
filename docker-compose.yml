@@ -46,6 +46,33 @@ services:
         source: ./docker-entrypoint-initdb.d/
         target: /docker-entrypoint-initdb.d
 
+  uwsgi:
+    # a custom image for django
+    build: ./uwsgi
+
+    # You can pass multiple environment variables from an external file through
+    # to a service’s containers with the ‘env_file’ option
+    env_file:
+      - .env
+
+    # exec a different command from image
+    command: uwsgi --ini /var/uwsgi/shiny_uwsgi.ini --memory-report
+
+    # set working dir for uwsgi
+    working_dir: /var/uwsgi/shiny/
+
+    # define volumes
+    volumes:
+      - type: bind
+        source: ./django-data/
+        target: /var/uwsgi/
+
+    # Expose the default port
+
+    # link container to database
+    links:
+      - db
+
   nginx:
     image: "nginx:1.17"
 
