@@ -18,7 +18,12 @@ LABEL maintainer="Paolo Cozzi <paolo.cozzi@ibba.cnr.it"
 RUN apt-get update && apt-get install -y \
     libssl-dev \
     libxml2-dev \
+    libpq-dev \
  && apt-get clean && rm -rf /var/lib/apt/lists/
+
+# Install polished packages
+COPY polished.r /root/
+RUN Rscript --slave --vanilla /root/polished.r
 
 # Install R packages. Packages are listed in packages.txt
 COPY install.r packages.txt /root/

@@ -1,2 +1,8 @@
 # ignoring application directory
 shiny-apps/
+
+# ignoring configuration file
+.env
+
+# ignore backup files
+*~

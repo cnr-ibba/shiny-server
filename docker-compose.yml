@@ -22,6 +22,12 @@ services:
     expose:
       - "3838"
 
+    depends_on:
+      - db
+
+    links:
+      - db
+
     # auto restart container
     restart: always
 
@@ -32,7 +38,7 @@ services:
       - "22080:80"
 
     links:
-      - shiny:shiny
+      - shiny
 
     volumes:
       - type: bind
@@ -42,8 +48,20 @@ services:
     # auto restart container
     restart: always
 
+  db:
+    image: postgres:10.12
+
+    env_file:
+      - .env
+
+    volumes:
+    - type: volume
+      source: db-data
+      target: /var/lib/postgresql/data
+
 networks:
   default:
 
 volumes:
   shiny-logs:
+  db-data:
