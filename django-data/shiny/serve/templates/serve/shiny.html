@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <!-- auto resize page height
+    https://stackoverflow.com/a/9976309 -->
+    <script>
+      function resizeIframe(obj) {
+        obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+      }
+    </script>
+  </head>
+  <body>
+
+    <h1>We are in the wrapping page!</h1>
+
+    <iframe src="/shiny/001-hello/" frameborder="0" width="100%" scrolling="no" onload="resizeIframe(this)"></iframe>
+
+  </body>
+</html>

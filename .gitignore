@@ -8,3 +8,6 @@ mysql-data/
 
 # ignoring media directory
 django-data/shiny/media/
+
+# project directory conf
+.spyproject/
