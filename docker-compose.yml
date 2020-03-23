@@ -80,7 +80,7 @@ services:
       - "22080:80"
 
     links:
-      - shiny:shiny
+      - shiny
 
     volumes:
       - type: bind
