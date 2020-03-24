@@ -20,4 +20,4 @@ def auth(request):
         return HttpResponse(status=200)
 
     print("user is not authenticated")
-    return HttpResponse(status=403)
+    return HttpResponse(status=401)
