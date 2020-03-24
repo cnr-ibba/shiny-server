@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from serve import views
+from serve.views import ShinyAppListView, ShinyAppView, auth
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', views.auth),
-    path('', views.shiny),
+    path('auth/', auth),
+    path('<slug:slug>/', ShinyAppView.as_view(), name='shinyapp'),
+    path('', ShinyAppListView.as_view(), name="home"),
 ]

@@ -8,14 +8,16 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Shiny Application List</title>
   </head>
   <body>
-    <h1>We are in the wrapping page!</h1>
+    <h1>Shiny Application List</h1>
 
-    <div class="embed-responsive embed-responsive-1by1">
-      <iframe class="embed-responsive-item" src="/shiny/001-hello/"></iframe>
-    </div>
+    <ul>
+      {% for shinyapp in shinyapp_list %}
+        <li><a href="{{ shinyapp.slug }}">{{ shinyapp.title }}</a></li>
+      {% endfor %}
+    </ul>
 
 
 

@@ -6,12 +6,20 @@ Created on Mon Mar 23 16:34:27 2020
 @author: Paolo Cozzi <paolo.cozzi@ibba.cnr.it>
 """
 
-from django.shortcuts import render
+from django.views.generic import DetailView, ListView
 from django.http import HttpResponse
 
+from .models import ShinyApp
 
-def shiny(request):
-    return render(request, 'serve/shiny.html')
+
+class ShinyAppView(DetailView):
+    model = ShinyApp
+    template_name = 'serve/shinyapp_detail.html'
+
+
+class ShinyAppListView(ListView):
+    model = ShinyApp
+    template_name = 'serve/shinyapp_list.html'
 
 
 def auth(request):
