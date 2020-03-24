@@ -31,3 +31,6 @@ class ShinyApp(models.Model):
 
     def get_absolute_url(self):
         return reverse('shinyapp', kwargs={'slug': self.slug})
+
+    def __str__(self):
+        return f"<{self.title}> at '{self.location}'"
