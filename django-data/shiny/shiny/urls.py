@@ -14,12 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from serve.views import ShinyAppListView, ShinyAppView, auth
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # https://docs.djangoproject.com/en/2.2/topics/auth/default/#module-django.contrib.auth.views
+    path('accounts/', include('django.contrib.auth.urls')),
     path('auth/', auth),
     path('<slug:slug>/', ShinyAppView.as_view(), name='shinyapp'),
     path('', ShinyAppListView.as_view(), name="home"),
