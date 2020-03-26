@@ -17,17 +17,73 @@
   {% block body %}
 
   <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">ShinyServer</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+              <a class="nav-link" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item {% if request.resolver_match.url_name == 'applications' %}active{% endif %}">
+              <a class="nav-link" href="{% url 'applications' %}">My Applications</a>
+            </li>
+            {% if user.is_authenticated %}
+              {% if user.is_staff %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+              </li>
+              {% endif %}
+            <form class="form-inline">
+              <a href="{% url 'logout' %}" class="btn btn-light ml-2">Log out</a>
+            </form>
+            {% else %}
+            <form class="form-inline">
+              <a href="{% url 'login' %}" class="btn btn-light ml-2">Log in</a>
+            </form>
+            {% endif %}
+          </ul>
+        </div>
+
+      </div>
+    </nav>
+
+    <!-- CONTENT -->
     {% block content %}
 
     <h1>Hello, world!</h1>
 
     {% endblock content %}
 
+    <!-- FOOTER -->
+    <footer id="main-footer" class="fixed-bottom bg-secondary text-white py-2">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <p class="lead text-center mb-0">
+              Copyright &copy; <span id="year"></span> ShinyServer
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    {% block  custom-js %}{% endblock custom-js%}
+    <script>
+      // Get the current year for the copyright
+      $('#year').text(new Date().getFullYear());
+    </script>
+
   </body>
 
   {% endblock body %}
