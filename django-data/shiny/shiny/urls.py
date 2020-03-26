@@ -16,13 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from serve.views import ShinyAppListView, ShinyAppView, auth
+from serve.views import ShinyAppListView, ShinyAppView, auth, IndexView
 
 urlpatterns = [
+    path('', IndexView.as_view(), name="home"),
+    path('auth/', auth),
     path('admin/', admin.site.urls),
     # https://docs.djangoproject.com/en/2.2/topics/auth/default/#module-django.contrib.auth.views
     path('accounts/', include('django.contrib.auth.urls')),
-    path('auth/', auth),
-    path('<slug:slug>/', ShinyAppView.as_view(), name='shinyapp'),
-    path('', ShinyAppListView.as_view(), name="home"),
+    path('applications/', ShinyAppListView.as_view(), name="applications"),
+    path('applications/<slug:slug>/', ShinyAppView.as_view(), name='shinyapp'),
 ]

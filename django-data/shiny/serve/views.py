@@ -7,10 +7,16 @@ Created on Mon Mar 23 16:34:27 2020
 """
 
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 from django.http import HttpResponse
 
 from .models import ShinyApp
+
+
+class IndexView(TemplateView):
+    """Home page"""
+
+    template_name = "serve/index.html"
 
 
 class ShinyAppView(UserPassesTestMixin, DetailView):
@@ -43,16 +49,13 @@ def auth(request):
     # get a request uri like: /shiny/001-hello/__sockjs__/...
     request_uri = request.META['REQUEST_URI']
 
-    # split path and get a location from the first two items
-    path = request_uri.split("/")
-
-    print(path)
-
-    # check path lenght (ie /shiny/")
-    if len(path) < 3 or path[2] == '':
+    # check a specific path
+    if request_uri == "/shiny/":
         print(f"{request_uri} allowed to {request.user.username}")
         return HttpResponse(status=200)
 
+    # split path and get a location from the first two items
+    path = request_uri.split("/")
     location = "/".join(path[:3]) + "/"
 
     # get an object model by location
