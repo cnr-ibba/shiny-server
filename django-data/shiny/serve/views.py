@@ -43,11 +43,17 @@ class ShinyAppListView(ListView):
 
 
 def auth(request):
+    # print(f"Headers: {request.headers}")
+    # print(f"META: {request.META}")
+
     if not request.user.is_authenticated:
         return HttpResponse(status=401)
 
     # get a request uri like: /shiny/001-hello/__sockjs__/...
-    request_uri = request.META['REQUEST_URI']
+    # HTTP_X_ORIGINAL_URI is defined in NGINX configuration
+    request_uri = request.META['HTTP_X_ORIGINAL_URI']
+
+    print(f"request_uri: {request_uri}")
 
     # check a specific path
     # HINT: hide the /shiny/ location?
