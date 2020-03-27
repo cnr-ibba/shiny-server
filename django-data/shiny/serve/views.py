@@ -50,6 +50,7 @@ def auth(request):
     request_uri = request.META['REQUEST_URI']
 
     # check a specific path
+    # HINT: hide the /shiny/ location?
     if request_uri == "/shiny/":
         print(f"{request_uri} allowed to {request.user.username}")
         return HttpResponse(status=200)
@@ -58,15 +59,22 @@ def auth(request):
     path = request_uri.split("/")
     location = "/".join(path[:3]) + "/"
 
-    # get an object model by location
-    shinyapp = ShinyApp.objects.get(location=location)
+    # get an object model by location (if exists)
+    shiny_app_qs = ShinyApp.objects.filter(location=location)
 
-    print(f"Got model {shinyapp}")
+    # location is supposed to be unique by model definition
+    if shiny_app_qs.count() == 1:
+        shinyapp = ShinyApp.objects.get(location=location)
 
-    # check permissions
-    if request.user in shinyapp.users.all():
-        print(f"{request_uri} allowed to {request.user.username}")
-        return HttpResponse(status=200)
+        print(f"Got model {shinyapp}")
 
+        # TODO: is this app public available?
+
+        # check permissions
+        if request.user in shinyapp.users.all():
+            print(f"{request_uri} allowed to {request.user.username}")
+            return HttpResponse(status=200)
+
+    # this will return if a model doesn't exists or I don't have permissions
     print(f"{request_uri} denied to {request.user.username}")
     return HttpResponse(status=403)
