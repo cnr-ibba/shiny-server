@@ -36,5 +36,8 @@ RUN chown shiny.shiny /var/log/shiny-server
 # change user
 USER shiny
 
+# set log directory as volume log
+VOLUME /var/log/shiny-server
+
 # override the defaul CMD (put stdout and stderr in docker stdout and stderr)
 CMD ["shiny-server"]

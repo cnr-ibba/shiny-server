@@ -1,1 +1,6 @@
 shinydashboard
+rdrop2
+plotly
+tidyverse
+anchors
+DT

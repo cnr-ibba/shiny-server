@@ -81,6 +81,7 @@ services:
 
     links:
       - shiny
+      - uwsgi
 
     volumes:
       - type: bind
