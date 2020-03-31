@@ -13,7 +13,8 @@ from .models import ShinyApp
 
 class ShinyAppAdmin(admin.ModelAdmin):
     list_display = (
-        'location', 'title', 'slug', 'description', 'users_display')
+        'location', 'title', 'slug', 'description', 'is_public',
+        'users_display')
 
     prepopulated_fields = {'slug': ('title',)}
 

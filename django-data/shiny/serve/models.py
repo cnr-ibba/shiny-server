@@ -21,6 +21,7 @@ class ShinyApp(models.Model):
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True, default='')
     users = models.ManyToManyField(User, related_name="shinyapps")
+    is_public = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         # slugify title if not provided
