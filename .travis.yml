@@ -4,7 +4,7 @@ branches:
   only:
   - master
 install:
-  - env | grep 'DEBUG\|MYSQL\|SHINY' >> .env
+  - env | grep 'DEBUG\|MYSQL\|SHINY\|KEY' >> .env
   - docker-compose pull
   - docker-compose build
   - docker-compose up -d
@@ -24,3 +24,4 @@ env:
   - SHINY_DATABASE=shiny_database
   - SHINY_USER=shiny_user
   - SHINY_PASSWORD=shiny_password
+  - SECRET_KEY=shiny_secret_key
