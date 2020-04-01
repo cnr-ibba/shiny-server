@@ -45,5 +45,8 @@ ENV PYTHONUNBUFFERED 1
 COPY requirements.txt /root/
 RUN pip install --no-cache-dir -r /root/requirements.txt
 
+# utility script to ensure that postgres server is up
+COPY wait-for-mysql.sh /root/
+
 # Execute a default command
 CMD ["/bin/bash"]

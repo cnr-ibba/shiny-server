@@ -1,0 +1,26 @@
+services:
+  - docker
+branches:
+  only:
+  - master
+install:
+  - env | grep 'DEBUG\|MYSQL\|SHINY' >> .env
+  - docker-compose pull
+  - docker-compose build
+  - docker-compose up -d
+  - docker-compose run --no-deps --rm uwsgi sh -c 'mkdir -p /var/uwsgi/shiny/media'
+  - docker-compose run --no-deps --rm uwsgi sh -c 'chmod -R g+rwx media'
+  - docker-compose run --no-deps --rm uwsgi sh -c 'chgrp -R www-data .'
+  - docker-compose ps
+script:
+  - docker-compose run --no-deps --rm uwsgi /root/wait-for-mysql.sh coverage run --source='.' -m py.test
+# after_script:
+#   - docker-compose run --rm uwsgi coveralls
+#   - docker-compose run --rm uwsgi ocular
+env:
+  global:
+  - DEBUG=False
+  - MYSQL_ROOT_PASSWORD=mysql_password
+  - SHINY_DATABASE=shiny_database
+  - SHINY_USER=shiny_user
+  - SHINY_PASSWORD=shiny_password
