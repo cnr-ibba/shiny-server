@@ -4,6 +4,7 @@
 # DOCKER-VERSION  17.05.0-ce
 # AUTHOR:         Paolo Cozzi <paolo.cozzi@ibba.cnr.it>
 # DESCRIPTION:    A django container working on LTS django 2.2 on python 3
+# TO_BUILD:       docker build --rm -t bunop/shiny-server_uwsgi .
 #
 
 # The official django image is deprecated in favor of the standard python image

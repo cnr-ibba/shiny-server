@@ -3,9 +3,7 @@
 # DOCKER-VERSION  17.05.0-ce
 # AUTHOR:         Paolo Cozzi <paolo.cozzi@ibba.cnr.it>
 # DESCRIPTION:    A shiny container based on rocker-shiny
-# TO_BUILD:       docker build --rm -t ibba/shiny .
-# TO_RUN:         docker run -d -P ibba/shiny
-# TO_TAG:         docker tag ibba/shiny:latest ibba/shiny:0.5
+# TO_BUILD:       docker build --rm -t bunop/shiny-server_shiny .
 #
 
 # Get the last rocker/shiny image
