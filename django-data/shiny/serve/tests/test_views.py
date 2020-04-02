@@ -129,3 +129,74 @@ class ShinyAppListViewTestCase(BaseMixin, TestCase):
 
         # test for expected slugs
         self.assertEqual(reference, test)
+
+
+class AuthURLTestCase(BaseMixin, TestCase):
+    def setUp(self):
+        # call base method
+        super().setUp()
+
+    def test_anonymous_user(self):
+        client = Client()
+
+        # test not an app
+        response = client.get("/auth/", HTTP_X_ORIGINAL_URI='/shiny/')
+        self.assertEqual(response.status_code, 403)
+
+        # test public app (got access)
+        response = client.get(
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/003-reactivity/')
+        self.assertEqual(response.status_code, 200)
+
+        # a private app need a login
+        response = client.get(
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/002-text/')
+        self.assertEqual(response.status_code, 401)
+
+    def test_user(self):
+        # authenticate user
+        client = Client()
+        client.login(username='test', password='test')
+
+        # test not an app
+        response = client.get("/auth/", HTTP_X_ORIGINAL_URI='/shiny/')
+        self.assertEqual(response.status_code, 403)
+
+        # test public app (got access)
+        response = client.get(
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/003-reactivity/')
+        self.assertEqual(response.status_code, 200)
+
+        # can access to my private app
+        response = client.get(
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/002-text/')
+        self.assertEqual(response.status_code, 200)
+
+        # can't access to others application
+        response = client.get(
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/001-hello/')
+        self.assertEqual(response.status_code, 403)
+
+    def test_superuser(self):
+        # authenticate as superuser
+        client = Client()
+        client.login(username='admin', password='test')
+
+        # test not an app
+        response = client.get("/auth/", HTTP_X_ORIGINAL_URI='/shiny/')
+        self.assertEqual(response.status_code, 200)
+
+        # test public app (got access)
+        response = client.get(
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/003-reactivity/')
+        self.assertEqual(response.status_code, 200)
+
+        # can access to others applications
+        response = client.get(
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/002-text/')
+        self.assertEqual(response.status_code, 200)
+
+        # can access to my private app
+        response = client.get(
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/001-hello/')
+        self.assertEqual(response.status_code, 200)

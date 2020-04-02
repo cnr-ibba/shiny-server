@@ -82,7 +82,7 @@ def auth(request):
     # HTTP_X_ORIGINAL_URI is defined in NGINX configuration
     request_uri = request.META['HTTP_X_ORIGINAL_URI']
 
-    print(f"request_uri: {request_uri}")
+    print(f"request_uri: '{request_uri}'")
 
     # split path and get a location from the first two items
     path = request_uri.split("/")
@@ -95,11 +95,11 @@ def auth(request):
     if shiny_app_qs.count() == 1:
         shinyapp = ShinyApp.objects.get(location=location)
 
-        print(f"Got model {shinyapp}")
+        print(f"Got model '{shinyapp}'")
 
         # check 2: is this app public available?
         if shinyapp.is_public:
-            print(f"{request_uri} is public")
+            print(f"'{request_uri}' is public")
             return HttpResponse(status=200)
 
         # check 3: ensure authentication
@@ -108,9 +108,9 @@ def auth(request):
 
         # check 4: user owns the application
         if request.user in shinyapp.users.all():
-            print(f"{request_uri} allowed to {request.user.username}")
+            print(f"{request_uri} allowed to '{request.user.username}'")
             return HttpResponse(status=200)
 
     # this will return if a model doesn't exists or I don't have permissions
-    print(f"{request_uri} denied to {request.user.username}")
+    print(f"{request_uri} denied to '{request.user.username}'")
     return HttpResponse(status=403)
