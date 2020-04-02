@@ -2,8 +2,8 @@
 version: "3.2"
 services:
   shiny:
-    # build shiny image
-    build: ./shiny
+    # get image from dockerhub
+    image: bunop/shiny-server_shiny:latest
 
     volumes:
       - type: bind
@@ -47,8 +47,8 @@ services:
         target: /docker-entrypoint-initdb.d
 
   uwsgi:
-    # a custom image for django
-    build: ./uwsgi
+    # get image from dockerhub
+    image: bunop/shiny-server_uwsgi:latest
 
     # You can pass multiple environment variables from an external file through
     # to a service’s containers with the ‘env_file’ option

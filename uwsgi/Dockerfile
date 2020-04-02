@@ -4,6 +4,7 @@
 # DOCKER-VERSION  17.05.0-ce
 # AUTHOR:         Paolo Cozzi <paolo.cozzi@ibba.cnr.it>
 # DESCRIPTION:    A django container working on LTS django 2.2 on python 3
+# TO_BUILD:       docker build --rm -t bunop/shiny-server_uwsgi .
 #
 
 # The official django image is deprecated in favor of the standard python image
@@ -44,6 +45,9 @@ ENV PYTHONUNBUFFERED 1
 # Install pypi modules (uwsgi)
 COPY requirements.txt /root/
 RUN pip install --no-cache-dir -r /root/requirements.txt
+
+# utility script to ensure that postgres server is up
+COPY wait-for-mysql.sh /root/
 
 # Execute a default command
 CMD ["/bin/bash"]
