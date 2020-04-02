@@ -26,6 +26,10 @@ class ShinyAppView(UserPassesTestMixin, DetailView):
     permission_denied_message = 'access denied'
 
     def test_func(self):
+        if self.request.user.is_superuser:
+            # admin can view all apps
+            return True
+
         # check ownership of such object
         shinyapp = self.get_object()
 

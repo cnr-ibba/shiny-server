@@ -45,18 +45,28 @@ class ShinyAppViewTestCase(BaseMixin, TestCase):
         self.client.login(username='test', password='test')
 
     def test_url_resolves_view(self):
-        view = resolve('/applications/hello-shiny/')
+        view = resolve('/applications/reactivity/')
         self.assertIsInstance(view.func.view_class(), ShinyAppView)
 
     def test_get_my_app(self):
         url = reverse('shinyapp', kwargs={'slug': 'hello-shiny'})
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 403)
 
     def test_get_not_my_app(self):
         url = reverse('shinyapp', kwargs={'slug': 'shiny-text'})
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_app_for_admin(self):
+        url = reverse('shinyapp', kwargs={'slug': 'shiny-text'})
+
+        # login as admin
+        client = Client()
+        client.login(username='admin', password='test')
+        response = client.get(url)
+
+        self.assertEqual(response.status_code, 200)
 
     def test_get_public_app(self):
         url = reverse('shinyapp', kwargs={'slug': 'reactivity'})
@@ -97,7 +107,7 @@ class ShinyAppListViewTestCase(BaseMixin, TestCase):
     def test_get_admin_app(self):
         # login as admin
         client = Client()
-        client.login(username='test', password='test')
+        client.login(username='admin', password='test')
         response = client.get(self.url)
 
         # ok get all app for the admin
@@ -107,7 +117,7 @@ class ShinyAppListViewTestCase(BaseMixin, TestCase):
     def test_my_app(self):
         # login as a normal user
         client = Client()
-        client.login(username='test2', password='test2')
+        client.login(username='test', password='test')
         response = client.get(self.url)
 
         # get only my app and the public app
