@@ -1,0 +1,44 @@
+[
+{
+  "model": "serve.shinyapp",
+  "pk": 1,
+  "fields": {
+    "location": "/shiny/001-hello/",
+    "title": "Hello Shiny!",
+    "slug": "hello-shiny",
+    "description": "Shiny test application 001 from https://github.com/rstudio/shiny-examples",
+    "is_public": false,
+    "users": [
+      1
+    ]
+  }
+},
+{
+  "model": "serve.shinyapp",
+  "pk": 2,
+  "fields": {
+    "location": "/shiny/002-text/",
+    "title": "Shiny Text",
+    "slug": "shiny-text",
+    "description": "Shiny test application 002 from https://github.com/rstudio/shiny-examples",
+    "is_public": false,
+    "users": [
+      2
+    ]
+  }
+},
+{
+  "model": "serve.shinyapp",
+  "pk": 3,
+  "fields": {
+    "location": "/shiny/003-reactivity/",
+    "title": "Reactivity",
+    "slug": "reactivity",
+    "description": "This example demonstrates a core feature of Shiny: **reactivity**. In the `server` function, a reactive called `datasetInput` is declared.",
+    "is_public": true,
+    "users": [
+      1
+    ]
+  }
+}
+]
