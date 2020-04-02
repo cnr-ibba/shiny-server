@@ -25,7 +25,7 @@ class ShinyApp(models.Model):
 
     def save(self, *args, **kwargs):
         # slugify title if not provided
-        if self.slug is None:
+        if self.slug is None or self.slug == '':
             self.slug = slugify(self.title)
 
         super().save(*args, **kwargs)

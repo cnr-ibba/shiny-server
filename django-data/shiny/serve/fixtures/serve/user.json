@@ -10,7 +10,7 @@
     "first_name": "Foo",
     "last_name": "Bar",
     "email": "admin@test.com",
-    "is_staff": false,
+    "is_staff": true,
     "is_active": true,
     "date_joined": "2018-07-30T15:06:13.911Z",
     "groups": [],
