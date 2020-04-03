@@ -4,7 +4,7 @@ branches:
   only:
   - master
 install:
-- env | grep 'DEBUG\|MYSQL\|SHINY\|KEY\|TOKEN' >> .env
+- env | grep 'DEBUG\|MYSQL\|SHINY\|KEY\|TOKEN\|TRAVIS' >> .env
 - docker-compose pull
 - docker-compose build
 - docker-compose up -d
@@ -13,10 +13,10 @@ install:
 - docker-compose run --no-deps --rm uwsgi sh -c 'chgrp -R www-data .'
 - docker-compose ps
 script:
-- docker-compose run --no-deps --rm uwsgi /root/wait-for-mysql.sh coverage run --source='.'
-  -m py.test
+- docker-compose run --no-deps --rm --volume $PWD/.git:/var/uwsgi/.git uwsgi /root/wait-for-mysql.sh
+  coverage run --source='.' -m py.test
 after_script:
-- docker-compose run --rm uwsgi coveralls
+- docker-compose run --rm --volume $PWD/.git:/var/uwsgi/.git uwsgi coveralls
 env:
   global:
   - DEBUG=False
@@ -25,4 +25,4 @@ env:
   - SHINY_USER=shiny_user
   - SHINY_PASSWORD=shiny_password
   - SECRET_KEY=shiny_secret_key
-  - secure: nrzGmHZbu2i64Yg9BVVwtZsR4UMM9OxK8J3eeByXZ6yoBGREtUA/aCfiKQPjzblOmOpqf5C+9tnukOvTC/9WAubW8kRjf9S71DPPJlc1CXngFjSQG/lcQUZqcEiyal69JEE74RRa1YQMWaNR02SiYQJuI3fLiHxk69qMdnRT6YVHLzNBkf7XXiVxLH4LdKfI17TSfEWdaAWOTHXYRt/Sts16tAzcC5owsJJuYJeuscKiWuGym9ujg5Jc+8necL5xN8WZW2MiggG2302OV3jjL7M7Gl7i0nmJ+bhgmYYuviQ4KmVvp7I6Wn0f2+riET7uvLjVGcxuBbHClFPq5oFHCTYYvf278ti2AGyG2aGQTHWeg1lb+R8nWNnTbAXV9UH8cjdCvaf1BR4k7zQqswcHO2T8qP3JOJvFytmw5FheyIi8sKUrJ1xcGDvcROm2wGI1mjvWmjs0lqXzdxI8gqZNUS6ionchsx0as9kippyHxuo6dgL9HYBiiMPWKAouioTbkOA46m9dQR5oZKSnE45SyZC6K6ESjmH5WfQ2HdyDxbHibvU4+WLDrEunmrHycqOcSCK3lLH67mDRb1dQNWNdB2V6Kvs5l8iOvNh8iaWWi2mohKLfDwS2j/A+IIk2fZP/LoFxXJ1tthZz4EQWTJSrH39HssxAT/H8RzsJCs3LSu4=
+  - secure: oO6vVh9JQ59uPwoaYpPnuxtdJnZNkDhlpZGTcSDqEpzIu7ymdApcGgIbpQ3wAXnssye0th4xNq9X0FddMkcv6i4uB6VDh/c7ezbc3YYu1HGVnUlJfGPsnEvm2Jd+OqtT6zmjbBzwIuQscxpa4c8/h86RSIGlknMIT/Fp4AvJ9bcOMBzCHy7RjyD3RG3tYMtZHTDTgHykvU1usushtySdQwVdsm+RPaT1QzKEwTHQOYFDPdV6pitLIrMaTJjVAoxP7l20SudMJJ4sMSkuStJOytxi4c3T5B5O4fMIQWDhey2veOg8HQz6sAVgWrtuKMPoDJEVLpQQOwcWtRA66NntyihnJmRYyRApqlEGPZl2kmK7PD6j8luV7L0lRiMDQFnXwC2p2bzPqKaAyYYWKcZd/FNf5tJfNyQoh8Jo9c35cqonwQGcE1rB0Um12p0qWWp0OJ1VE4QEoChlMHV7g4GGLmBv0IRvHtX7odA5eXpBpXlk11UakF7UMqy2xc7k22t0wmjoXtm1HCcDpRtYEsyr6kWmweDWyEnnjjCc8LANRQ3DbDKdJzK2XLj5bSrxZUaGWivpSez7Ni0FxjjOwlXdpAnE6bcnVS697M6ECCyu55Vf1Uq9Vbb+V+UKuMOUx7HuMKm2kMaYX0yiyU+uiaLpfDra6z8mocr0leGY49mjqxs=
