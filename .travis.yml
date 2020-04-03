@@ -1,22 +1,22 @@
 services:
-  - docker
+- docker
 branches:
   only:
   - master
 install:
-  - env | grep 'DEBUG\|MYSQL\|SHINY\|KEY' >> .env
-  - docker-compose pull
-  - docker-compose build
-  - docker-compose up -d
-  - docker-compose run --no-deps --rm uwsgi sh -c 'mkdir -p /var/uwsgi/shiny/media'
-  - docker-compose run --no-deps --rm uwsgi sh -c 'chmod -R g+rwx media'
-  - docker-compose run --no-deps --rm uwsgi sh -c 'chgrp -R www-data .'
-  - docker-compose ps
+- env | grep 'DEBUG\|MYSQL\|SHINY\|KEY\|TOKEN' >> .env
+- docker-compose pull
+- docker-compose build
+- docker-compose up -d
+- docker-compose run --no-deps --rm uwsgi sh -c 'mkdir -p /var/uwsgi/shiny/media'
+- docker-compose run --no-deps --rm uwsgi sh -c 'chmod -R g+rwx media'
+- docker-compose run --no-deps --rm uwsgi sh -c 'chgrp -R www-data .'
+- docker-compose ps
 script:
-  - docker-compose run --no-deps --rm uwsgi /root/wait-for-mysql.sh coverage run --source='.' -m py.test
-# after_script:
-#   - docker-compose run --rm uwsgi coveralls
-#   - docker-compose run --rm uwsgi ocular
+- docker-compose run --no-deps --rm uwsgi /root/wait-for-mysql.sh coverage run --source='.'
+  -m py.test
+after_script:
+- docker-compose run --rm uwsgi coveralls
 env:
   global:
   - DEBUG=False
@@ -25,3 +25,4 @@ env:
   - SHINY_USER=shiny_user
   - SHINY_PASSWORD=shiny_password
   - SECRET_KEY=shiny_secret_key
+  - secure: nrzGmHZbu2i64Yg9BVVwtZsR4UMM9OxK8J3eeByXZ6yoBGREtUA/aCfiKQPjzblOmOpqf5C+9tnukOvTC/9WAubW8kRjf9S71DPPJlc1CXngFjSQG/lcQUZqcEiyal69JEE74RRa1YQMWaNR02SiYQJuI3fLiHxk69qMdnRT6YVHLzNBkf7XXiVxLH4LdKfI17TSfEWdaAWOTHXYRt/Sts16tAzcC5owsJJuYJeuscKiWuGym9ujg5Jc+8necL5xN8WZW2MiggG2302OV3jjL7M7Gl7i0nmJ+bhgmYYuviQ4KmVvp7I6Wn0f2+riET7uvLjVGcxuBbHClFPq5oFHCTYYvf278ti2AGyG2aGQTHWeg1lb+R8nWNnTbAXV9UH8cjdCvaf1BR4k7zQqswcHO2T8qP3JOJvFytmw5FheyIi8sKUrJ1xcGDvcROm2wGI1mjvWmjs0lqXzdxI8gqZNUS6ionchsx0as9kippyHxuo6dgL9HYBiiMPWKAouioTbkOA46m9dQR5oZKSnE45SyZC6K6ESjmH5WfQ2HdyDxbHibvU4+WLDrEunmrHycqOcSCK3lLH67mDRb1dQNWNdB2V6Kvs5l8iOvNh8iaWWi2mohKLfDwS2j/A+IIk2fZP/LoFxXJ1tthZz4EQWTJSrH39HssxAT/H8RzsJCs3LSu4=

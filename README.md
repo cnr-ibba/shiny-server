@@ -3,10 +3,16 @@ Shiny-django authentication
 ===========================
 
 This is an attempt of managing shiny authentication with django starting from this
-[guide][http://pawamoy.github.io/2018/03/15/django-auth-server-for-shiny/] and
+[guide](http://pawamoy.github.io/2018/03/15/django-auth-server-for-shiny/) and
 modifying stuff accordingly. The django template derive from
 [this repository](https://github.com/cnr-ibba/dockerfiles/tree/master/compose/django)
-while the shiny specifi configuration comes from [here](https://github.com/cnr-ibba/dockerfiles/tree/master/compose/shiny)
+while the shiny specific configuration comes from [here](https://github.com/cnr-ibba/dockerfiles/tree/master/compose/shiny)
+The aim of this project is to provide both free and restricted access to shiny
+applications relying on django authentication system and nginx. Applications could
+be accessed using the django frontend as a container of iframe application or
+directly by specifying the path of the application. A specific NGINX configuration
+will be responsible to provide access to shiny applications relying on django
+authentication system.
 
 Install docker and docker-compose
 ---------------------------------
@@ -19,7 +25,13 @@ and [docker-compose](https://docs.docker.com/compose/install/)
 The shiny-server composed image
 -------------------------------
 
-> *TODO* add a description of such docker-compose file
+The `shiny-server` project is composed by four different docker images:
+- `db`: a MySQL database which stores information about users credentials
+- `shiny`: a `rocker/shiny` based images with few dependencies installed to render
+  shiny applications
+- `uwsgi`: a Django base image which implements views and authentication system
+- `nginx`: used as a proxy to connect `shiny` and `uwsgi` backends. A special
+  configuration location lets to provide shiny contents to authenticated users
 
 ### Setting up the environment file
 
@@ -54,13 +66,13 @@ the existance of persistent data: on the host the two directories are named
 entire django environment and codes, is tracked in git while `mysql-data` not.
 When instantiated for the first time, `mysql-data` is generated and the database
 is initialized. After that, every instance of mysql will use the `mysql-data`
-directory, mantaing already generate data. If you plan to move `IMAGE-InjectTool`,
-you have to move all `IMAGE-InjectTool` directory with all its content
+directory, mantaing already generate data. If you plan to move `shiny-server`,
+you have to move all `shiny-server` directory with all its content
 
 ### Build the docker-compose suite
 
 In order to build the images according to the docker-compose.yml specificatios,
-Docker will download and install all required dependences; it will need several
+Docker will download and install all required dependencies; it will need several
 minutes to complete. Launch this command from the working directory:
 
 ```
@@ -121,7 +133,7 @@ $ docker-compose run --rm uwsgi python manage.py createsuperuser
 
 The last commands will prompt for a user creation. This will be a new django
 admin user, not the database users described in `env` files. Track user credentials
-since those will be not stored in `.env` file of `IMAGE-InjectTool` directory.
+since those will be not stored in `.env` file of `shiny-server` directory.
 
 ### check that everythong works as expected
 
