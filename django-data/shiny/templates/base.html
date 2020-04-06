@@ -8,6 +8,9 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
+    <!-- Place your kit's code here -->
+    <script src="https://kit.fontawesome.com/d6c84aa4ed.js" crossorigin="anonymous"></script>
+
     <title>
       {% block title %}Base Template Title{% endblock title %}
     </title>
@@ -27,24 +30,42 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
-              <a class="nav-link" href="{% url 'home' %}">Home</a>
+              <a class="nav-link" href="{% url 'home' %}">
+                <i class="fas fa-home"></i> Home
+              </a>
             </li>
             <li class="nav-item {% if request.resolver_match.url_name == 'applications' %}active{% endif %}">
-              <a class="nav-link" href="{% url 'applications' %}">My Applications</a>
+              <a class="nav-link" href="{% url 'applications' %}">
+                <i class="fas fa-list-alt"></i> My Applications
+              </a>
             </li>
             {% if user.is_authenticated %}
               {% if user.is_staff %}
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+                <a class="nav-link" href="{% url 'admin:index' %}">
+                  <i class="fas fa-tools"></i> Admin
+                </a>
               </li>
               {% endif %}
-            <form class="form-inline">
-              <a href="{% url 'logout' %}" class="btn btn-light ml-2">Log out</a>
-            </form>
+              <li class="nav-item dropdown mr-3">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+                  <i class="fas fa-user"></i> Welcome {{ user.username }}
+                </a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="{% url 'password_change' %}">
+                    <i class="fas fa-key"></i> Change password
+                  </a>
+                  <a class="dropdown-item" href="{% url 'logout' %}">
+                    <i class="fas fa-sign-out-alt"></i> Log out
+                  </a>
+                </div>
+              </li>
             {% else %}
-            <form class="form-inline">
-              <a href="{% url 'login' %}" class="btn btn-light ml-2">Log in</a>
-            </form>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">
+                <i class="fas fa-sign-in-alt"></i> Login
+              </a>
+            </li>
             {% endif %}
           </ul>
         </div>
