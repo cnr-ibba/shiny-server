@@ -61,7 +61,7 @@
                 </div>
               </li>
             {% else %}
-            <li class="nav-item">
+            <li class="nav-item {% if request.resolver_match.url_name == 'login' %}active{% endif %}">
               <a class="nav-link" href="{% url 'login' %}">
                 <i class="fas fa-sign-in-alt"></i> Login
               </a>

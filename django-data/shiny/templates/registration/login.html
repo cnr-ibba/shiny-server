@@ -5,9 +5,8 @@
 
 {% block title %}Login to shiny Server{% endblock title %}
 
-{% block body %}
+{% block content %}
 
-<body>
   <div class="container my-5">
     {% if form.errors %}
       <div class="alert alert-dismissible alert-danger mb-5">
@@ -30,7 +29,7 @@
     {% endif %}
 
     <div class="row">
-      <div class="col-md-4 mx-auto">
+      <div class="col-md-6 mx-auto">
         <div class="card shadow-lg">
           <div class="card-header text-center">
             <h4>ShinyServer Login</h4>
@@ -59,8 +58,5 @@
     </div>
 
   </div>
-</body>
 
-{% include "includes/javascripts.html" %}
-
-{% endblock body %}
+{% endblock content %}
