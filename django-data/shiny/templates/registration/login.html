@@ -34,19 +34,51 @@
           <div class="card-header text-center">
             <h4>ShinyServer Login</h4>
           </div>
-          <div class="card-body">
+          <div class="card-body text-center">
+            <h3><i class="fa fa-sign-in-alt fa-4x"></i></h3>
+  					<h2 class="text-center">Log In into ShinyServer</h2>
+            <p>Please provide your username and password.</p>
+
             <form method="post" action="{% url 'login' %}">
               {% csrf_token %}
+
               <div class="form-group">
-                {{ form.username.label_tag }}
-                {% render_field form.username class+="form-control" %}
-              </div>
+  							<div class="input-group">
+  								<div class="input-group-prepend">
+  									<div class="input-group-text">
+  										<i class="fas fa-user"></i>
+  									</div>
+  								</div>
+  								{% render_field form.username|add_error_class:"is-invalid" class+="form-control" placeholder=form.username.label %}
+  								{% if form.username.errors %}
+  								<div class="invalid-feedback">
+  									{{ form.username.errors.0 }}
+  								</div>
+  								{% endif %}
+  							</div>
+  						</div>
+
               <div class="form-group">
-                {{ form.password.label_tag }}
-                {% render_field form.password class+="form-control" %}
+  							<div class="input-group">
+  								<div class="input-group-prepend">
+  									<div class="input-group-text">
+  										<i class="fas fa-key"></i>
+  									</div>
+  								</div>
+  								{% render_field form.password|add_error_class:"is-invalid" class+="form-control" placeholder=form.password.label %}
+  								{% if form.password.errors %}
+  								<div class="invalid-feedback">
+  									{{ form.password.errors.0 }}
+  								</div>
+  								{% endif %}
+  							</div>
+  						</div>
+
+              <div class="form-group">
+                <input type="hidden" name="next" value="{{ next }}">
+                <button type="submit" name="button" class="btn btn-primary btn-block"><i class="fas fa-sign-in-alt"></i> Login</button>
               </div>
-              <input type="hidden" name="next" value="{{ next }}">
-              <button type="submit" name="button" class="btn btn-primary btn-block"><i class="fas fa-sign-in-alt"></i> Login</button>
+
             </form>
           </div>
           <div class="card-footer text-center">
