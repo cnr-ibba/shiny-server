@@ -4,7 +4,20 @@
 {% block title %}Welcome to shiny Server{% endblock title %}
 
 {% block content %}
-  <div class="container">
-    <h1 class="mt-2">Welcome to Shiny Server!</h1>
+  <div class="container pt-5">
+    <div class="jumbotron text-center mt-5">
+      <h1 class="display-4">Welcome to ShinyServer!</h1>
+      <p class="lead">Create, Execute and Share Shiny Applications inside docker containers</p>
+      <hr>
+      <p>Explore Shiny Applications @ibba.cnr.it</p>
+      <div class="row">
+        <div class="col-lg-4 offset-lg-2">
+          <a class="btn btn-primary btn-lg btn-block" href="{% url 'login' %}" role="button"><i class="fas fa-sign-in-alt"></i> Log in</a>
+        </div>
+        <div class="col-lg-4">
+          <a class="btn btn-info btn-lg btn-block" href="{% url 'applications' %}" role="button"><i class="fas fa-list-alt"></i> My Applications</a>
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock content %}
