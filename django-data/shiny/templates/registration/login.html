@@ -7,26 +7,26 @@
 
 {% block content %}
 
-  <div class="container my-5">
-    {% if form.errors %}
-      <div class="alert alert-dismissible alert-danger mb-5">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>Your username and password didn't match: </strong>
-        Please try again.
-      </div>
-    {% endif %}
+<div class="container my-5">
+  {% if form.errors %}
+    <div class="alert alert-dismissible alert-danger mb-5">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <strong>Your username and password didn't match: </strong>
+      Please try again.
+    </div>
+  {% endif %}
 
-    {% if next %}
-      {# User authenticated but has no access to that page (ie not staff user)#}
-      {% if user.is_authenticated %}
+  {% if next %}
+    {# User authenticated but has no access to that page (ie not staff user)#}
+    {% if user.is_authenticated %}
       <div class="alert alert-dismissible alert-warning mb-5">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <h4 class="alert-heading">Warning!</h4>
         <p class="mb-0">Your account doesn't have access to this page. To proceed,
-        please login with an account that has access.</p>
+          please login with an account that has access.</p>
       </div>
-      {% endif %}
     {% endif %}
+  {% endif %}
 
     <div class="row">
       <div class="col-md-6 mx-auto">
@@ -36,43 +36,43 @@
           </div>
           <div class="card-body text-center">
             <h3><i class="fa fa-sign-in-alt fa-4x"></i></h3>
-  					<h2 class="text-center">Log In into ShinyServer</h2>
+            <h2 class="text-center">Log In into ShinyServer</h2>
             <p>Please provide your username and password.</p>
 
             <form method="post" action="{% url 'login' %}">
               {% csrf_token %}
 
               <div class="form-group">
-  							<div class="input-group">
-  								<div class="input-group-prepend">
-  									<div class="input-group-text">
-  										<i class="fas fa-user"></i>
-  									</div>
-  								</div>
-  								{% render_field form.username|add_error_class:"is-invalid" class+="form-control" placeholder=form.username.label %}
-  								{% if form.username.errors %}
-  								<div class="invalid-feedback">
-  									{{ form.username.errors.0 }}
-  								</div>
-  								{% endif %}
-  							</div>
-  						</div>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fas fa-user"></i>
+                    </div>
+                  </div>
+                  {% render_field form.username|add_error_class:"is-invalid" class+="form-control" placeholder=form.username.label %}
+                  {% if form.username.errors %}
+                    <div class="invalid-feedback">
+                      {{ form.username.errors.0 }}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
 
               <div class="form-group">
-  							<div class="input-group">
-  								<div class="input-group-prepend">
-  									<div class="input-group-text">
-  										<i class="fas fa-key"></i>
-  									</div>
-  								</div>
-  								{% render_field form.password|add_error_class:"is-invalid" class+="form-control" placeholder=form.password.label %}
-  								{% if form.password.errors %}
-  								<div class="invalid-feedback">
-  									{{ form.password.errors.0 }}
-  								</div>
-  								{% endif %}
-  							</div>
-  						</div>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fas fa-key"></i>
+                    </div>
+                  </div>
+                  {% render_field form.password|add_error_class:"is-invalid" class+="form-control" placeholder=form.password.label %}
+                  {% if form.password.errors %}
+                  <div class="invalid-feedback">
+                    {{ form.password.errors.0 }}
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
 
               <div class="form-group">
                 <input type="hidden" name="next" value="{{ next }}">
@@ -91,4 +91,4 @@
 
   </div>
 
-{% endblock content %}
+  {% endblock content %}
