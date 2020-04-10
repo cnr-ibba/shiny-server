@@ -5,16 +5,16 @@
 
 {% block content %}
 
-  <div class="container">
+  <div class="container-apps">
     <h1 class="mt-2">{{ shinyapp.title }}</h1>
 
     <p>{{ shinyapp.description }}</p>
 
-    <a href="{{ shinyapp.location }}" target="_blank">View app in a new window</a>
+    <a href="{{ shinyapp.location }}" target="_blank"><i class="fas fa-desktop"></i> View app in a new window</a>
   </div>
 
-  <div class="container">
-    <div class="embed-responsive embed-responsive-1by1">
+  <div class="container-apps">
+    <div class="embed-responsive embed-responsive-4by3">
       <iframe class="embed-responsive-item" src="{{ shinyapp.location }}"></iframe>
     </div>
   </div>

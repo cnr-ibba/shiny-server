@@ -1,4 +1,5 @@
 <!doctype html>
+{% load staticfiles %}
 <html lang="en">
 <head>
   <!-- Required meta tags -->
@@ -6,7 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/united/bootstrap.min.css" rel="stylesheet" integrity="sha384-bzjLLgZOhgXbSvSc5A9LWWo/mSIYf7U7nFbmYIB2Lgmuiw3vKGJuu+abKoaTx4W6" crossorigin="anonymous">
+
+  <!-- standard custom stylesheet -->
+  <link rel="stylesheet" href="{% static 'css/custom.min.css' %}">
 
   <!-- Place your kit's code here -->
   <script src="https://kit.fontawesome.com/d6c84aa4ed.js" crossorigin="anonymous"></script>
@@ -81,17 +85,17 @@
   {% endblock content %}
 
   <!-- FOOTER -->
-  <footer id="main-footer" class="fixed-bottom bg-secondary text-white py-2">
+  <footer id="main-footer" class="footer">
     <div class="container">
       <div class="row">
         <div class="col">
-          <p class="lead text-left mb-0">
+          <p class="lead text-left mb-0 text-primary">
             Copyright &copy; <span id="year"></span> ShinyServer
           </p>
         </div>
         <div class="col">
           <p class="lead text-right mb-0">
-            <a class="text-white" href="https://github.com/cnr-ibba/shiny-server"><i class="fab fa-github"></i></a>
+            <a href="https://github.com/cnr-ibba/shiny-server"><i class="fab fa-github"></i></a>
           </p>
         </div>
       </div>
@@ -102,10 +106,10 @@
 
   <!-- Optional JavaScript -->
   {% block  custom-js %}{% endblock custom-js%}
-  
+
   <script>
-  // Get the current year for the copyright
-  $('#year').text(new Date().getFullYear());
+    // Get the current year for the copyright
+    $('#year').text(new Date().getFullYear());
   </script>
 
 </body>
