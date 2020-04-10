@@ -1,91 +1,119 @@
 <!doctype html>
+{% load static %}
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/united/bootstrap.min.css" rel="stylesheet" integrity="sha384-bzjLLgZOhgXbSvSc5A9LWWo/mSIYf7U7nFbmYIB2Lgmuiw3vKGJuu+abKoaTx4W6" crossorigin="anonymous">
 
-    <title>
-      {% block title %}Base Template Title{% endblock title %}
-    </title>
+  <!-- standard custom stylesheet -->
+  <link rel="stylesheet" href="{% static 'css/custom.min.css' %}">
 
-  </head>
+  <!-- Place your kit's code here -->
+  <script src="https://kit.fontawesome.com/d6c84aa4ed.js" crossorigin="anonymous"></script>
 
-  {% block body %}
+  <title>
+    {% block title %}Base Template Title{% endblock title %}
+  </title>
 
-  <body>
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'home' %}">ShinyServer</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
-              <a class="nav-link" href="{% url 'home' %}">Home</a>
-            </li>
-            <li class="nav-item {% if request.resolver_match.url_name == 'applications' %}active{% endif %}">
-              <a class="nav-link" href="{% url 'applications' %}">My Applications</a>
-            </li>
-            {% if user.is_authenticated %}
-              {% if user.is_staff %}
+</head>
+
+{% block body %}
+
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home' %}">ShinyServer</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+            <a class="nav-link" href="{% url 'home' %}">
+              <i class="fas fa-home"></i> Home
+            </a>
+          </li>
+          <li class="nav-item {% if request.resolver_match.url_name == 'applications' %}active{% endif %}">
+            <a class="nav-link" href="{% url 'applications' %}">
+              <i class="fas fa-list-alt"></i> My Applications
+            </a>
+          </li>
+          {% if user.is_authenticated %}
+            {% if user.is_staff %}
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+                <a class="nav-link" href="{% url 'admin:index' %}">
+                  <i class="fas fa-tools"></i> Admin
+                </a>
               </li>
-              {% endif %}
-            <form class="form-inline">
-              <a href="{% url 'logout' %}" class="btn btn-light ml-2">Log out</a>
-            </form>
-            {% else %}
-            <form class="form-inline">
-              <a href="{% url 'login' %}" class="btn btn-light ml-2">Log in</a>
-            </form>
             {% endif %}
-          </ul>
-        </div>
-
+            <li class="nav-item dropdown mr-3">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+              <i class="fas fa-user"></i> Welcome {{ user.username }}
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'password_change' %}">
+                <i class="fas fa-key"></i> Change password
+              </a>
+              <a class="dropdown-item" href="{% url 'logout' %}">
+                <i class="fas fa-sign-out-alt"></i> Log out
+              </a>
+            </div>
+          </li>
+          {% else %}
+            <li class="nav-item {% if request.resolver_match.url_name == 'login' %}active{% endif %}">
+              <a class="nav-link" href="{% url 'login' %}">
+                <i class="fas fa-sign-in-alt"></i> Login
+              </a>
+            </li>
+          {% endif %}
+        </ul>
       </div>
-    </nav>
 
-    <!-- CONTENT -->
-    {% block content %}
+    </div>
+  </nav>
 
-    <h1>Hello, world!</h1>
+  <!-- CONTENT -->
+  {% block content %}
 
-    {% endblock content %}
+  <h1>Hello, world!</h1>
 
-    <!-- FOOTER -->
-    <footer id="main-footer" class="fixed-bottom bg-secondary text-white py-2">
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <p class="lead text-center mb-0">
-              Copyright &copy; <span id="year"></span> ShinyServer
-            </p>
-          </div>
+  {% endblock content %}
+
+  <!-- FOOTER -->
+  <footer id="main-footer" class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <p class="lead text-left mb-0 text-primary">
+            Copyright &copy; <span id="year"></span> ShinyServer
+          </p>
+        </div>
+        <div class="col">
+          <p class="lead text-right mb-0">
+            <a href="https://github.com/cnr-ibba/shiny-server"><i class="fab fa-github"></i></a>
+          </p>
         </div>
       </div>
-    </footer>
+    </div>
+  </footer>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  {% include "includes/javascripts.html" %}
 
-    {% block  custom-js %}{% endblock custom-js%}
-    <script>
-      // Get the current year for the copyright
-      $('#year').text(new Date().getFullYear());
-    </script>
+  <!-- Optional JavaScript -->
+  {% block  custom-js %}{% endblock custom-js%}
 
-  </body>
+  <script>
+    // Get the current year for the copyright
+    $('#year').text(new Date().getFullYear());
+  </script>
 
-  {% endblock body %}
+</body>
+
+{% endblock body %}
 
 </html>

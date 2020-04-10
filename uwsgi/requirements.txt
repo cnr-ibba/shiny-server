@@ -3,6 +3,8 @@ mysqlclient
 psycopg2
 django>=2.2.10,<3.0.0
 python-decouple
+django-widget-tweaks
+pillow
 ipython
 pytest-django
 coverage

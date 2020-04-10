@@ -1,0 +1,40 @@
+// a comment line to compile this file with atom sass-autocompile package
+
+// import united variables
+@import "variables";
+
+// import bootswatch object
+@import "bootswatch";
+
+// custom variables
+// 60px with default 16px font-size
+$footer-height: 3.75rem;
+$navbar-height: 3.5rem;
+
+// defining classes
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  // Margin bottom by footer height
+  margin-bottom: $footer-height +1rem;
+}
+
+/* A class to manage container for shiny-application iframes */
+.container-apps {
+  margin-left: 3rem;
+  margin-right: 3rem;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: $footer-height;
+  line-height: $footer-height;
+  background-color: $gray-300;
+}

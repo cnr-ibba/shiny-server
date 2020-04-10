@@ -5,12 +5,22 @@
 
 {% block content %}
   <div class="container">
-    <h1>Shiny Application List</h1>
-
-    <ul>
-      {% for shinyapp in shinyapp_list %}
-        <li><a href="{{ shinyapp.get_absolute_url }}">{{ shinyapp.title }}</a></li>
-      {% endfor %}
-    </ul>
+    <h1 class="mt-2">Shiny Application List</h1>
+    <div class="row row-cols-1 row-cols-md-3">
+    {% for shinyapp in shinyapp_list %}
+      <div class="col my-4">
+        <div class="card shadow-lg h-100">
+          <img class="card-img-top" src="{{ shinyapp.thumbnail.url }}" alt="">
+          <div class="card-body">
+            <h4 class="card-title">{{ shinyapp.title }}</h4>
+            <p class="card-text">{{ shinyapp.description }}</p>
+            <div class="text-center">
+              <a class="btn btn-primary btn-lg" href="{{ shinyapp.get_absolute_url }}" role="button"><i class="fas fa-server"></i> Show</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
   </div>
 {% endblock content %}
