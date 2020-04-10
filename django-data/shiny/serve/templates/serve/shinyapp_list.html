@@ -10,7 +10,7 @@
     {% for shinyapp in shinyapp_list %}
       <div class="col my-4">
         <div class="card shadow-lg h-100">
-          <img class="card-img-top" src="https://via.placeholder.com/320x200" alt="">
+          <img class="card-img-top" src="{{ shinyapp.thumbnail.url }}" alt="">
           <div class="card-body">
             <h4 class="card-title">{{ shinyapp.title }}</h4>
             <p class="card-text">{{ shinyapp.description }}</p>
