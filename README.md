@@ -113,7 +113,7 @@ folder:
 
 ```
 $ docker-compose run --rm uwsgi sh -c 'mkdir -p /var/uwsgi/shiny/media'
-$ docker-compose run --rm uwsgi sh -c 'chmod -R g+rw media'
+$ docker-compose run --rm uwsgi sh -c 'chmod -R g+rw media && chmod -R g+rwx media/thumbnails/'
 $ docker-compose run --rm uwsgi sh -c 'chgrp -R www-data .'
 ```
 

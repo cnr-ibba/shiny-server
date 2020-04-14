@@ -9,7 +9,7 @@ install:
 - docker-compose build
 - docker-compose up -d
 - docker-compose run --no-deps --rm uwsgi sh -c 'mkdir -p /var/uwsgi/shiny/media'
-- docker-compose run --no-deps --rm uwsgi sh -c 'chmod -R g+rwx media'
+- docker-compose run --no-deps --rm uwsgi sh -c 'chmod -R g+rwx media && chmod -R g+rwx media/thumbnails/'
 - docker-compose run --no-deps --rm uwsgi sh -c 'chgrp -R www-data .'
 - docker-compose ps
 script:

@@ -26,6 +26,11 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool, default=False)
 
+# A list of all the people who get code error notifications
+ADMINS = [
+    ('Admin', 'bioinfo.ibba@gmail.com'),
+    ('Paolo Cozzi', 'paolo.cozzi@ibba.cnr.it')]
+
 ALLOWED_HOSTS = ['*']
 
 # Application definition
