@@ -11,10 +11,10 @@
       <div class="col my-4">
         <div class="card shadow-lg h-100">
           <img class="card-img-top" src="{{ shinyapp.thumbnail.url }}" alt="">
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h4 class="card-title">{{ shinyapp.title }}</h4>
-            <p class="card-text">{{ shinyapp.description }}</p>
-            <div class="text-center">
+            <p class="card-text">{{ shinyapp.description|truncatechars:100 }}</p>
+            <div class="text-center mt-auto">
               <a class="btn btn-primary btn-lg" href="{{ shinyapp.get_absolute_url }}" role="button"><i class="fas fa-server"></i> Show</a>
             </div>
           </div>
