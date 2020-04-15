@@ -2,14 +2,14 @@
 Shiny-django authentication
 ===========================
 
-This is an attempt of managing shiny authentication with django starting from this
-[guide](http://pawamoy.github.io/2018/03/15/django-auth-server-for-shiny/) and
-modifying stuff accordingly. The django template derive from
+This is an attempt of managing shiny authentication with django starting from
+[Django application as an authentication / authorization server for Shiny](http://pawamoy.github.io/2018/03/15/django-auth-server-for-shiny/)
+guide and modifying stuff accordingly. The django template derive from
 [this repository](https://github.com/cnr-ibba/dockerfiles/tree/master/compose/django)
-while the shiny specific configuration comes from [here](https://github.com/cnr-ibba/dockerfiles/tree/master/compose/shiny)
+while the shiny specific configuration comes from [here](https://github.com/cnr-ibba/dockerfiles/tree/master/compose/shiny).
 The aim of this project is to provide both free and restricted access to shiny
 applications relying on django authentication system and nginx. Applications could
-be accessed using the django frontend as a container of iframe application or
+be accessed using the django frontend as a container of an iframe application or
 directly by specifying the path of the application. A specific NGINX configuration
 will be responsible to provide access to shiny applications relying on django
 authentication system.
@@ -106,6 +106,23 @@ SECRET_KEY=<your SECRET_KEY>
 DEBUG=False
 ```
 
+You need also to configure additional environment variables in order that authentication
+staff can works as expected by sending mail to user if they forget their passwords:
+
+```
+ADMINS=<admin name1>:<admin email>
+DEFAULT_FROM_EMAIL=<your email from>
+EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+EMAIL_HOST=<your stmp server>
+EMAIL_HOST_PASSWORD=<your smtp password>
+EMAIL_HOST_USER=<your smtp password>
+EMAIL_PORT=<your email port address>
+EMAIL_USE_TLS=<set 'True' to use TLS, false otherwise
+```
+
+Please refere to django documentation for [ADMIN](https://docs.djangoproject.com/en/2.2/ref/settings/#admins)
+and [SMTP backend](https://docs.djangoproject.com/en/2.2/topics/email/#smtp-backend)
+
 ### Fixing django permissions
 
 You will also to check file permissions in django data, expecially for `media`
@@ -135,7 +152,7 @@ The last commands will prompt for a user creation. This will be a new django
 admin user, not the database users described in `env` files. Track user credentials
 since those will be not stored in `.env` file of `shiny-server` directory.
 
-### check that everythong works as expected
+### Check everything works as expected
 
 Test  your fresh InjectTool installation with:
 

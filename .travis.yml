@@ -4,7 +4,7 @@ branches:
   only:
   - master
 install:
-- env | grep 'DEBUG\|MYSQL\|SHINY\|KEY\|MAIL\|TOKEN\|TRAVIS' >> .env
+- env | grep 'DEBUG\|MYSQL\|SHINY\|KEY\|MAIL\|ADMINS\|TOKEN\|TRAVIS' >> .env
 - docker-compose pull
 - docker-compose build
 - docker-compose up -d
@@ -29,4 +29,5 @@ env:
   - EMAIL_HOST=example.email.com
   - EMAIL_HOST_USER=email_user
   - EMAIL_HOST_PASSWORD=email_password
+  - ADMINS=example:example@email.com,admin:admin@email.com
   - secure: oO6vVh9JQ59uPwoaYpPnuxtdJnZNkDhlpZGTcSDqEpzIu7ymdApcGgIbpQ3wAXnssye0th4xNq9X0FddMkcv6i4uB6VDh/c7ezbc3YYu1HGVnUlJfGPsnEvm2Jd+OqtT6zmjbBzwIuQscxpa4c8/h86RSIGlknMIT/Fp4AvJ9bcOMBzCHy7RjyD3RG3tYMtZHTDTgHykvU1usushtySdQwVdsm+RPaT1QzKEwTHQOYFDPdV6pitLIrMaTJjVAoxP7l20SudMJJ4sMSkuStJOytxi4c3T5B5O4fMIQWDhey2veOg8HQz6sAVgWrtuKMPoDJEVLpQQOwcWtRA66NntyihnJmRYyRApqlEGPZl2kmK7PD6j8luV7L0lRiMDQFnXwC2p2bzPqKaAyYYWKcZd/FNf5tJfNyQoh8Jo9c35cqonwQGcE1rB0Um12p0qWWp0OJ1VE4QEoChlMHV7g4GGLmBv0IRvHtX7odA5eXpBpXlk11UakF7UMqy2xc7k22t0wmjoXtm1HCcDpRtYEsyr6kWmweDWyEnnjjCc8LANRQ3DbDKdJzK2XLj5bSrxZUaGWivpSez7Ni0FxjjOwlXdpAnE6bcnVS697M6ECCyu55Vf1Uq9Vbb+V+UKuMOUx7HuMKm2kMaYX0yiyU+uiaLpfDra6z8mocr0leGY49mjqxs=

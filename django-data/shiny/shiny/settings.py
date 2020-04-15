@@ -27,9 +27,10 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', cast=bool, default=False)
 
 # A list of all the people who get code error notifications
-ADMINS = [
-    ('Admin', 'bioinfo.ibba@gmail.com'),
-    ('Paolo Cozzi', 'paolo.cozzi@ibba.cnr.it')]
+ADMINS = config(
+    'ADMINS',
+    cast=lambda v: [tuple(s.split(":")) for s in v.split(',')],
+    default=[])
 
 ALLOWED_HOSTS = ['*']
 
