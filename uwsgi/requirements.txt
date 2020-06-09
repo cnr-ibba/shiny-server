@@ -1,7 +1,7 @@
 uwsgi
 mysqlclient
 psycopg2
-django>=2.2.10,<3.0.0
+django==2.2.13
 python-decouple
 django-widget-tweaks
 pillow
