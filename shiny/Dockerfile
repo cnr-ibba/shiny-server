@@ -1,13 +1,13 @@
 #
-# VERSION 0.5
-# DOCKER-VERSION  17.05.0-ce
+# VERSION 0.6
+# DOCKER-VERSION  19.03.13
 # AUTHOR:         Paolo Cozzi <paolo.cozzi@ibba.cnr.it>
 # DESCRIPTION:    A shiny container based on rocker-shiny
 # TO_BUILD:       docker build --rm -t bunop/shiny-server_shiny .
 #
 
 # Get the last rocker/shiny image
-FROM rocker/shiny:3.6.1
+FROM rocker/shiny:4.0.1
 
 # The mainteiner of this image
 LABEL maintainer="Paolo Cozzi <paolo.cozzi@ibba.cnr.it"
@@ -21,6 +21,9 @@ RUN dpkg-reconfigure -f noninteractive tzdata
 RUN apt-get update && apt-get install -y \
     libssl-dev \
     libxml2-dev \
+    texlive-latex-base \
+    texlive-latex-recommended \
+    texlive-latex-extra \
  && apt-get clean && rm -rf /var/lib/apt/lists/
 
 # Install R packages. Packages are listed in packages.txt
