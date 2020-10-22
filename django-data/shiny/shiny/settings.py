@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from datetime import datetime
 
 from decouple import config
 
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks',
+    'markdownx',
     'serve',
 ]
 
@@ -175,6 +177,12 @@ MEDIA_URL = '/media/'
 # collect all Django static files in the static folder
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+
+# https://neutronx.github.io/django-markdownx/customization/#markdownx_media_path
+MARKDOWNX_MEDIA_PATH = datetime.now().strftime('markdownx/%Y/%m/%d')
+
+# https://neutronx.github.io/django-markdownx/customization/#markdownx_markdownify_function
+MARKDOWNX_MARKDOWNIFY_FUNCTION = 'markdownx.utils.markdownify'
 
 # simply displaying them in the console
 # https://simpleisbetterthancomplex.com/series/2017/09/25/a-complete-beginners-guide-to-django-part-4.html#console-email-backend

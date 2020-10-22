@@ -22,6 +22,7 @@ urlpatterns = [
     path('', IndexView.as_view(), name="home"),
     path('auth/', auth),
     path('admin/', admin.site.urls),
+    path('markdownx/', include('markdownx.urls')),
     # https://docs.djangoproject.com/en/2.2/topics/auth/default/#module-django.contrib.auth.views
     path('accounts/', include('django.contrib.auth.urls')),
     path('applications/', ShinyAppListView.as_view(), name="applications"),

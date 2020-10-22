@@ -8,10 +8,12 @@ Created on Tue Mar 24 16:13:40 2020
 
 from django.contrib import admin
 
+from markdownx.admin import MarkdownxModelAdmin
+
 from .models import ShinyApp
 
 
-class ShinyAppAdmin(admin.ModelAdmin):
+class ShinyAppAdmin(MarkdownxModelAdmin):
     list_display = (
         'location', 'title', 'slug', 'description', 'is_public',
         'users_display')

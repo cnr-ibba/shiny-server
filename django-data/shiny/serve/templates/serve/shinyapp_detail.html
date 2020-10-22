@@ -8,7 +8,7 @@
   <div class="container-apps">
     <h1 class="mt-2">{{ shinyapp.title }}</h1>
 
-    <p>{{ shinyapp.description }}</p>
+    <p>{{ shinyapp.formatted_markdown|safe }}</p>
 
     <a href="{{ shinyapp.location }}" target="_blank"><i class="fas fa-desktop"></i> View app in a new window</a>
   </div>
