@@ -1,7 +1,7 @@
 uwsgi
 mysqlclient
 psycopg2
-django==2.2.16
+django==2.2.18
 python-decouple
 django-widget-tweaks
 django-markdownx
