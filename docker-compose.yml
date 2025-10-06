@@ -1,5 +1,4 @@
 
-version: "3.2"
 services:
   shiny:
     # get image from dockerhub
@@ -74,7 +73,7 @@ services:
       - db
 
   nginx:
-    image: "nginx:1.17"
+    image: "nginx:1.29"
 
     ports:
       - "22080:80"
