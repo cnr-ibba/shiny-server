@@ -1,16 +1,18 @@
 #
-# VERSION 0.6
-# DOCKER-VERSION  19.03.13
+# VERSION 0.7
+# DOCKER-VERSION  28.5.0
 # AUTHOR:         Paolo Cozzi <paolo.cozzi@ibba.cnr.it>
 # DESCRIPTION:    A shiny container based on rocker-shiny
 # TO_BUILD:       docker build --rm -t bunop/shiny-server_shiny .
 #
 
 # Get the last rocker/shiny image
-FROM rocker/shiny:4.0.1
+FROM rocker/shiny:4.5.1
 
-# The mainteiner of this image
-LABEL maintainer="Paolo Cozzi <paolo.cozzi@ibba.cnr.it"
+# The maintainer of this image
+LABEL maintainer="Paolo Cozzi <paolo.cozzi@ibba.cnr.it>"
+LABEL R.version="4.5.1"
+LABEL description="A shiny container based on rocker-shiny"
 
 # synchronize timezone for container
 # https://forums.docker.com/t/synchronize-timezone-from-host-to-container/39116
@@ -40,5 +42,5 @@ USER shiny
 # set log directory as volume log
 VOLUME /var/log/shiny-server
 
-# override the defaul CMD (put stdout and stderr in docker stdout and stderr)
+# override the default CMD (put stdout and stderr in docker stdout and stderr)
 CMD ["shiny-server"]
