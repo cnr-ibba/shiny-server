@@ -80,6 +80,10 @@ def auth(request):
 
     # get a request uri like: /shiny/001-hello/__sockjs__/...
     # HTTP_X_ORIGINAL_URI is defined in NGINX configuration
+    if 'HTTP_X_ORIGINAL_URI' not in request.META:
+        print("No HTTP_X_ORIGINAL_URI in request.META")
+        return HttpResponse(status=403)
+
     request_uri = request.META['HTTP_X_ORIGINAL_URI']
 
     print(f"request_uri: '{request_uri}'")
