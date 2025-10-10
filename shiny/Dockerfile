@@ -3,15 +3,18 @@
 # DOCKER-VERSION  28.5.0
 # AUTHOR:         Paolo Cozzi <paolo.cozzi@ibba.cnr.it>
 # DESCRIPTION:    A shiny container based on rocker-shiny
-# TO_BUILD:       docker build --rm -t bunop/shiny-server_shiny .
+# TO_BUILD:       docker build --build-arg SHINY_BASE=rocker/shiny:4.5.1 --build-arg R_VERSION=4.5.1 -t bunop/shiny-server_shiny:4.5.1 .
+#                 docker build --build-arg SHINY_BASE=rocker/shiny:4.0.5 --build-arg R_VERSION=4.0.5 -t bunop/shiny-server_shiny:4.0.5 .
 #
 
-# Get the last rocker/shiny image
-FROM rocker/shiny:4.5.1
+ARG SHINY_BASE=rocker/shiny:4.5.1
+ARG R_VERSION=4.5.1
+
+FROM ${SHINY_BASE}
 
 # The maintainer of this image
 LABEL maintainer="Paolo Cozzi <paolo.cozzi@ibba.cnr.it>"
-LABEL R.version="4.5.1"
+LABEL R.version="${R_VERSION}"
 LABEL description="A shiny container based on rocker-shiny"
 
 # synchronize timezone for container

@@ -28,6 +28,34 @@ services:
     # auto restart container
     restart: always
 
+  shiny-4.0:
+    # get image from dockerhub
+    image: bunop/shiny-server_shiny:4.0.5
+
+    volumes:
+      - type: bind
+        source: ./shiny-apps
+        target: /srv/shiny-server/
+
+      - type: volume
+        source: shiny-logs
+        target: /var/log/shiny-server/
+
+      - type: volume
+        source: renv-cache
+        target: /srv/renv-cache
+
+      - type: bind
+        source: ./shiny/shiny-server.conf
+        target: /etc/shiny-server/shiny-server.conf
+
+    # expose the shiny server ports
+    expose:
+      - "3838"
+
+    # auto restart container
+    restart: always
+
   db:
     # get the latest mysql server
     image: mariadb:10.5
