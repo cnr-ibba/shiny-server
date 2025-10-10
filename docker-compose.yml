@@ -13,6 +13,10 @@ services:
         source: shiny-logs
         target: /var/log/shiny-server/
 
+      - type: volume
+        source: renv-cache
+        target: /srv/renv-cache
+
       - type: bind
         source: ./shiny/shiny-server.conf
         target: /etc/shiny-server/shiny-server.conf
@@ -99,3 +103,4 @@ networks:
 
 volumes:
   shiny-logs:
+  renv-cache:

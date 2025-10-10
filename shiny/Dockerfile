@@ -21,11 +21,19 @@ RUN dpkg-reconfigure -f noninteractive tzdata
 
 # install package dependencies
 RUN apt-get update && apt-get install -y \
+    git \
     libssl-dev \
     libxml2-dev \
     texlive-latex-base \
     texlive-latex-recommended \
     texlive-latex-extra \
+    libharfbuzz-dev \
+    libfribidi-dev \
+    libfreetype6-dev \
+    libpng-dev \
+    libtiff5-dev \
+    libjpeg-dev \
+    libwebp-dev \
  && apt-get clean && rm -rf /var/lib/apt/lists/
 
 # Install R packages. Packages are listed in packages.txt
@@ -36,11 +44,29 @@ RUN Rscript --slave --vanilla /root/install.r
 RUN mkdir -p /var/log/shiny-server
 RUN chown shiny.shiny /var/log/shiny-server
 
+# set a global renv cache path
+ENV RENV_PATHS_ROOT=/srv/renv-cache
+ENV RENV_PATHS_LIBRARY_ROOT=/srv/renv-cache/library
+
+RUN mkdir -p /srv/renv-cache && \
+    chown -R shiny:shiny /srv/renv-cache
+
+# set the renv cache path in Renviron
+RUN echo "RENV_PATHS_ROOT=/srv/renv-cache" >> /usr/local/lib/R/etc/Renviron && \
+    echo "RENV_PATHS_LIBRARY_ROOT=/srv/renv-cache/library" >> /usr/local/lib/R/etc/Renviron
+
 # change user
 USER shiny
 
 # set log directory as volume log
 VOLUME /var/log/shiny-server
+
+# other volumes
+VOLUME /srv/shiny-server
+VOLUME /srv/renv-cache
+
+# change to the shiny app directory
+WORKDIR /srv/shiny-server/
 
 # override the default CMD (put stdout and stderr in docker stdout and stderr)
 CMD ["shiny-server"]
