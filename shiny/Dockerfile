@@ -58,11 +58,8 @@ RUN mkdir -p /srv/renv-cache && \
 RUN echo "RENV_PATHS_ROOT=/srv/renv-cache" >> /usr/local/lib/R/etc/Renviron && \
     echo "RENV_PATHS_LIBRARY_ROOT=/srv/renv-cache/library" >> /usr/local/lib/R/etc/Renviron
 
-# change user
+# change to shiny user
 USER shiny
-
-# set log directory as volume log
-VOLUME /var/log/shiny-server
 
 # other volumes
 VOLUME /srv/shiny-server

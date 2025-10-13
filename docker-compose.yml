@@ -1,8 +1,8 @@
 
 services:
-  shiny:
+  shiny-4.5:
     # get image from dockerhub
-    image: bunop/shiny-server_shiny:latest
+    image: bunop/shiny-server_shiny:4.5.1
 
     volumes:
       - type: bind
@@ -10,7 +10,7 @@ services:
         target: /srv/shiny-server/
 
       - type: volume
-        source: shiny-logs
+        source: shiny-4.5-logs
         target: /var/log/shiny-server/
 
       - type: volume
@@ -38,7 +38,7 @@ services:
         target: /srv/shiny-server/
 
       - type: volume
-        source: shiny-logs
+        source: shiny-4.0-logs
         target: /var/log/shiny-server/
 
       - type: volume
@@ -111,7 +111,8 @@ services:
       - "22080:80"
 
     links:
-      - shiny
+      - shiny-4.5
+      - shiny-4.0
       - uwsgi
 
     volumes:
@@ -130,5 +131,6 @@ networks:
   default:
 
 volumes:
-  shiny-logs:
+  shiny-4.0-logs:
+  shiny-4.5-logs:
   renv-cache:
