@@ -182,9 +182,13 @@ class AuthURLTestCase(BaseMixin, TestCase):
         client = Client()
         client.login(username='admin', password='test')
 
-        # test not an app
+        # test for auth without HTTP_X_ORIGINAL_URI
+        response = client.get("/auth/")
+        self.assertEqual(response.status_code, 403)
+
+        # test not an app: even for admin this is forbidden
         response = client.get("/auth/", HTTP_X_ORIGINAL_URI='/shiny/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 403)
 
         # test public app (got access)
         response = client.get(
