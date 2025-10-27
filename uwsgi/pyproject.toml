@@ -7,12 +7,12 @@ license = "GPL-3.0-or-later"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-django = "2.2.28"
+django = "3.2.25"
 uwsgi = "^2.0"
 mysqlclient = "^2.0"
 python-decouple = "^3.8"
 django-widget-tweaks = "^1.4"
-django-markdownx = "^3.0"
+django-markdownx = "^4.0"
 pillow = "^10.0"
 ipython = "^8.0"
 

@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAOQ,kFAAmB,CCO3B,IAAK,CACH,QAAQ,CAAE,QAAQ,CAClB,UAAU,CAAE,IAAI,CAGlB,IAAK,CAEH,aAAa,CAAE,OAAoB,CAIrC,eAAgB,CACd,WAAW,CAAE,IAAI,CACjB,YAAY,CAAE,IAAI,CAKpB,OAAQ,CACN,QAAQ,CAAE,QAAQ,CAClB,MAAM,CAAE,CAAC,CACT,KAAK,CAAE,IAAI,CACX,MAAM,CA1BQ,OAAO,CA2BrB,WAAW,CA3BG,OAAO,CA4BrB,gBAAgB,CC5BP,OAAO",
-"sources": ["../scss/_bootswatch.scss","../scss/custom.scss","../scss/_variables.scss"],
-"names": [],
-"file": "custom.min.css"
-}
