@@ -1,7 +1,7 @@
 
 #
-# VERSION 0.8
-# DOCKER-VERSION  17.05.0-ce
+# VERSION 0.9
+# DOCKER-VERSION  28.5.0
 # AUTHOR:         Paolo Cozzi <paolo.cozzi@ibba.cnr.it>
 # DESCRIPTION:    A django container working on LTS django 2.2 on python 3
 # TO_BUILD:       docker build --rm -t bunop/shiny-server_uwsgi .
@@ -40,13 +40,13 @@ VOLUME /var/uwsgi/
 EXPOSE 8000
 
 # This environment variable force stdin, stdout and stderr to be totally unbuffered
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
 
 # Install pypi modules (uwsgi)
 COPY requirements.txt /root/
 RUN pip install --no-cache-dir -r /root/requirements.txt
 
-# utility script to ensure that postgres server is up
+# utility script to ensure that mysql server is up
 COPY wait-for-mysql.sh /root/
 
 # Execute a default command
