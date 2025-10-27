@@ -43,9 +43,9 @@ The `shiny-server` project is composed by four different docker containers:
 
 Clone this project and enter in project directory:
 
-```
-$ git clone https://github.com/cnr-ibba/shiny-server.git
-$ cd shiny-server
+```bash
+git clone https://github.com/cnr-ibba/shiny-server.git
+cd shiny-server
 ```
 
 This location will be referred as **working directory**, since all commands need
@@ -59,7 +59,7 @@ directory in which we can define all variables useful for our containers, like d
 credentials. Edit a new `.env` file in working directory and set values for such
 environment variables accordingly:
 
-```
+```conf
 MYSQL_ROOT_PASSWORD=<root_password>
 SHINY_DATABASE=<shiny_db>
 SHINY_USER=<shiny_user>
@@ -82,8 +82,8 @@ In order to build the images according to the `docker-compose.yml` specification
 Docker needs download and install all required dependencies; it will need several
 minutes to complete. Launch this command from the working directory:
 
-```
-$ docker-compose build
+```bash
+docker-compose build
 ```
 
 ### Fixing django permissions
@@ -91,9 +91,9 @@ $ docker-compose build
 You will also to check file permissions in `django-data` folder, expecially for `media`
 folder:
 
-```
-$ docker-compose run --rm uwsgi sh -c 'chmod -R g+rw media && chmod g+rwx media/thumbnails/'
-$ docker-compose run --rm uwsgi sh -c 'chgrp -R www-data .'
+```bash
+docker-compose run --rm uwsgi sh -c 'chmod -R g+rw media && chmod g+rwx media/thumbnails/'
+docker-compose run --rm uwsgi sh -c 'chgrp -R www-data .'
 ```
 
 ### Initialize Django tables
@@ -102,12 +102,12 @@ After inizialization, a new django user with administrative privilges is needed.
 not the default mysql user, but a user valid only in django environment. Moreover
 the django tables need to be defined:
 
-```
-$ docker-compose run --rm uwsgi python manage.py check
-$ docker-compose run --rm uwsgi python manage.py migrate
-$ docker-compose run --rm uwsgi python manage.py makemigrations
-$ docker-compose run --rm uwsgi python manage.py migrate
-$ docker-compose run --rm uwsgi python manage.py createsuperuser
+```bash
+docker-compose run --rm uwsgi python manage.py check
+docker-compose run --rm uwsgi python manage.py migrate
+docker-compose run --rm uwsgi python manage.py makemigrations
+docker-compose run --rm uwsgi python manage.py migrate
+docker-compose run --rm uwsgi python manage.py createsuperuser
 ```
 
 The last commands will prompt for a user creation. This will be a new django
@@ -118,8 +118,8 @@ since those will be not stored in `.env` file in `shiny-server` directory.
 
 Test  your fresh InjectTool installation with:
 
-```
-$ docker-compose run --rm uwsgi pytest
+```bash
+docker-compose run --rm uwsgi pytest
 ```
 
 Start composed image
@@ -129,8 +129,8 @@ Pages are served by an nginx docker container controlled by Docker Compose
 (see the `docker-compose.yml` file content), which is linked to the shiny
 server and django instance. In order to start the application:
 
-```
-$ docker-compose up -d
+```bash
+docker-compose up -d
 ```
 
 The shiny-server interface is available for a local access through Internet browser
