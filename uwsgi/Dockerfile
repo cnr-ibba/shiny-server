@@ -1,10 +1,11 @@
 
 #
-# VERSION 0.9
+# VERSION 0.10
 # DOCKER-VERSION  28.5.0
 # AUTHOR:         Paolo Cozzi <paolo.cozzi@ibba.cnr.it>
-# DESCRIPTION:    A django container working on LTS django 2.2 on python 3 with Poetry
-# TO_BUILD:       docker build --rm -t bunop/shiny-server_uwsgi .
+# DESCRIPTION:    A django container working on LTS django 3.2 on python 3 with Poetry
+# TO_BUILD:       docker build --rm -t bunop/shiny-server_uwsgi:latest .
+# TO_TAG:         docker tag bunop/shiny-server_uwsgi:latest bunop/shiny-server_uwsgi:3.2
 #
 
 ###############################################################################
@@ -100,9 +101,6 @@ RUN chmod 755 /usr/local/bin/wait-for-mysql.sh
 # copy the application from build stage
 COPY --from=0 ${APP_PATH} ${APP_PATH}
 WORKDIR ${APP_PATH}
-
-# Set uwsgi directory as VOLUME
-VOLUME ${APP_PATH}
 
 # Expose the default port
 EXPOSE 8000
