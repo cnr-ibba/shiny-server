@@ -7,7 +7,7 @@ license = "GPL-3.0-or-later"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-django = "3.2.25"
+django = "^4.2"
 uwsgi = "^2.0"
 mysqlclient = "^2.0"
 python-decouple = "^3.8"

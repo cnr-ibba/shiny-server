@@ -1,11 +1,11 @@
 
 #
-# VERSION 0.10
+# VERSION 0.11
 # DOCKER-VERSION  28.5.0
 # AUTHOR:         Paolo Cozzi <paolo.cozzi@ibba.cnr.it>
-# DESCRIPTION:    A django container working on LTS django 3.2 on python 3 with Poetry
+# DESCRIPTION:    A django container working on LTS django 4.2 on python 3 with Poetry
 # TO_BUILD:       docker build --rm -t bunop/shiny-server_uwsgi:latest .
-# TO_TAG:         docker tag bunop/shiny-server_uwsgi:latest bunop/shiny-server_uwsgi:3.2
+# TO_TAG:         docker tag bunop/shiny-server_uwsgi:latest bunop/shiny-server_uwsgi:4.2
 #
 
 ###############################################################################
