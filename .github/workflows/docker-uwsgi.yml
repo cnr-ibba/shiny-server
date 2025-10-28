@@ -40,7 +40,7 @@ jobs:
         file: ./uwsgi/Dockerfile
         push: true
         tags: |
-          ${{ secrets.DOCKERHUB_USERNAME }}/shiny-server_uwsgi:4.2
+          ${{ secrets.DOCKERHUB_USERNAME }}/shiny-server_uwsgi:5.2
           ${{ github.ref == 'refs/heads/master' && format('{0}/shiny-server_uwsgi:latest', secrets.DOCKERHUB_USERNAME) || '' }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
