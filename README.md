@@ -2,7 +2,7 @@
 Shiny-django authentication
 ===========================
 
-[![Build Status](https://travis-ci.com/cnr-ibba/shiny-server.svg?branch=master)](https://travis-ci.com/cnr-ibba/shiny-server)
+[![Django Tests](https://github.com/cnr-ibba/shiny-server/actions/workflows/django-tests.yml/badge.svg)](https://github.com/cnr-ibba/shiny-server/actions/workflows/django-tests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/cnr-ibba/shiny-server/badge.svg)](https://coveralls.io/github/cnr-ibba/shiny-server)
 ![GitHub](https://img.shields.io/github/license/cnr-ibba/shiny-server)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/cnr-ibba/shiny-server)
