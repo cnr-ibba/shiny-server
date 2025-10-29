@@ -32,7 +32,10 @@ class ShinyApp(models.Model):
     location = models.CharField(
         max_length=255,
         unique=True,
-        help_text="Application path starting with /shiny-{version}/ (e.g., '/shiny-4.5/001-hello/')",
+        help_text=(
+            "Application path starting with /shiny-{version}/ (e.g., '/shiny-4.5"
+            "/001-hello/')"
+        ),
     )
     title = models.CharField(
         max_length=255, help_text="Display name of the Shiny application"
@@ -53,24 +56,35 @@ class ShinyApp(models.Model):
         User,
         related_name="shinyapps",
         blank=True,
-        help_text="Users who have access to this application (only relevant if not public)",
+        help_text=(
+            "Users who have access to this application (only relevant if not public)"
+        ),
     )
     groups = models.ManyToManyField(
         Group,
         related_name="shinyapps",
         blank=True,
-        help_text="Groups whose members have access to this application (only relevant if not public)",
+        help_text=(
+            "Groups whose members have access to this application "
+            "(only relevant if not public)"
+        ),
     )
     is_public = models.BooleanField(
         default=False,
-        help_text="If checked, the application is accessible to all users without authentication",
+        help_text=(
+            "If checked, the application is accessible to all users "
+            "without authentication"
+        ),
     )
     r_version = models.CharField(
         max_length=3,
         choices=RVersion.choices,
         default=RVersion.R_4_5,
         verbose_name="R Version",
-        help_text="R version for this application. Location path must start with '/shiny-{version}/'",
+        help_text=(
+            "R version for this application. Location path must start "
+            "with '/shiny-{version}/'"
+        ),
     )
 
     def clean(self):
@@ -82,7 +96,10 @@ class ShinyApp(models.Model):
         if not self.location.startswith(expected_prefix):
             raise ValidationError(
                 {
-                    "location": f"Location must start with '{expected_prefix}' for R version {self.r_version}"
+                    "location": (
+                        f"Location must start with '{expected_prefix}' "
+                        f"for R version {self.r_version}"
+                    )
                 }
             )
 

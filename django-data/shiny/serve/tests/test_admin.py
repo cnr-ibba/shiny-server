@@ -144,7 +144,9 @@ class ShinyAppAdminFormTestCase(TestCase):
         self.assertEqual(form.cleaned_data["location"], "/shiny-4.5/apps/subdir/myapp/")
 
     def test_clean_replaces_and_adds_trailing_slash(self):
-        """Test that both prefix replacement and trailing slash addition work together"""
+        """Test that both prefix replacement and trailing slash
+        addition work together"""
+
         form = ShinyAppAdminForm(
             data={
                 "title": "Test App 8",

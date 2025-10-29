@@ -70,7 +70,10 @@ class ShinyAppAdmin(MarkdownxModelAdmin):
             "Access Control",
             {
                 "fields": ("is_public", "users", "groups"),
-                "description": "Control who can access this application. Users can be granted access either individually or through group membership.",
+                "description": (
+                    "Control who can access this application. Users can be "
+                    "granted access either individually or through group membership."
+                ),
             },
         ),
     )

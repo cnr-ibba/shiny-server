@@ -73,7 +73,8 @@ class ShinyAppListView(ListView):
             if self.request.user.is_superuser:
                 return queryset
 
-            # get only public and my applications (either directly assigned or via groups)
+            # get only public and my applications (either directly assigned or via
+            # groups)
             queryset = queryset.filter(
                 Q(is_public=True)
                 | Q(users__in=[self.request.user])
