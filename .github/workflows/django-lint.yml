@@ -1,0 +1,74 @@
+name: Django Linting
+
+on:
+  push:
+    branches:
+      - master
+      - devel
+    paths:
+      - 'django-data/**'
+      - 'uwsgi/**'
+      - '.github/workflows/django-lint.yml'
+  pull_request:
+    branches:
+      - master
+      - devel
+    paths:
+      - 'django-data/**'
+      - 'uwsgi/**'
+      - '.github/workflows/django-lint.yml'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Cache Poetry dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pypoetry
+            uwsgi/.venv
+          key: ${{ runner.os }}-poetry-${{ hashFiles('uwsgi/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 - --version 2.2.1
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
+        working-directory: uwsgi
+        run: |
+          poetry config virtualenvs.in-project true
+          poetry install --with dev
+
+      - name: Run flake8
+        working-directory: uwsgi
+        run: |
+          poetry run flake8 ../django-data/shiny/ --count --statistics --show-source
+
+      - name: Check code formatting with black
+        working-directory: uwsgi
+        run: |
+          poetry run black --check --diff ../django-data/shiny/
+
+      - name: Check import sorting with isort
+        working-directory: uwsgi
+        run: |
+          poetry run isort --check-only --diff ../django-data/shiny/
+
+      - name: Run pylint
+        working-directory: uwsgi
+        run: |
+          poetry run pylint ../django-data/shiny/serve/ ../django-data/shiny/shiny/ --exit-zero
+        continue-on-error: true
