@@ -5,6 +5,36 @@
 
 {% block content %}
 
+  <style>
+    /* Responsive iframe styling */
+    .shiny-iframe-container {
+      position: relative;
+      width: 100%;
+      min-height: 600px; /* min height for desktop */
+    }
+
+    @media (max-width: 768px) {
+      .shiny-iframe-container {
+        min-height: 500px; /* min height for tablet */
+      }
+    }
+
+    @media (max-width: 576px) {
+      .shiny-iframe-container {
+        min-height: 400px; /* min height for mobile */
+      }
+    }
+
+    .shiny-iframe-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  </style>
+
   <div class="container-apps">
     <h1 class="mt-2">{{ shinyapp.title }}</h1>
 
@@ -14,8 +44,8 @@
   </div>
 
   <div class="container-apps">
-    <div class="embed-responsive embed-responsive-4by3">
-      <iframe class="embed-responsive-item" src="{{ shinyapp.location }}"></iframe>
+    <div class="shiny-iframe-container">
+      <iframe src="{{ shinyapp.location }}"></iframe>
     </div>
   </div>
 
