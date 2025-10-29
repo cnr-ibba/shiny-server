@@ -40,7 +40,12 @@ class ShinyAppView(UserPassesTestMixin, DetailView):
         if shinyapp.is_public:
             return True
 
+        # Check if user is directly assigned
         if self.request.user in shinyapp.users.all():
+            return True
+
+        # Check if user belongs to one of the assigned groups
+        if shinyapp.groups.filter(user=self.request.user).exists():
             return True
 
         return False
@@ -68,9 +73,10 @@ class ShinyAppListView(ListView):
             if self.request.user.is_superuser:
                 return queryset
 
-            # get only public and my applications
+            # get only public and my applications (either directly assigned or via groups)
             queryset = queryset.filter(
-                Q(is_public=True) | Q(users__in=[self.request.user]))
+                Q(is_public=True) | Q(users__in=[self.request.user]) | Q(groups__user=self.request.user)
+            ).distinct()
 
         return queryset
 
@@ -115,9 +121,14 @@ def auth(request):
         if not request.user.is_authenticated:
             return HttpResponse(status=401)
 
-        # check 4: user owns the application
+        # check 4: user owns the application (directly or via group)
         if request.user in shinyapp.users.all():
-            logger.debug(f"{request_uri} allowed to '{request.user.username}'")
+            logger.debug(f"{request_uri} allowed to '{request.user.username}' (direct access)")
+            return HttpResponse(status=200)
+
+        # check 5: user belongs to one of the assigned groups
+        if shinyapp.groups.filter(user=request.user).exists():
+            logger.debug(f"{request_uri} allowed to '{request.user.username}' (group access)")
             return HttpResponse(status=200)
 
     # this will return if a model doesn't exists or I don't have permissions

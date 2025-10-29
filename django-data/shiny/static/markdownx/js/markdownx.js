@@ -1,27 +1,29 @@
-(function e(t, n, r) {
-    function s(o, u) {
-        if (!n[o]) {
-            if (!t[o]) {
-                var a = typeof require == "function" && require;
-                if (!u && a) return a(o, !0);
-                if (i) return i(o, !0);
-                var f = new Error("Cannot find module '" + o + "'");
-                throw f.code = "MODULE_NOT_FOUND", f;
+(function() {
+    function r(e, n, t) {
+        function o(i, f) {
+            if (!n[i]) {
+                if (!e[i]) {
+                    var c = "function" == typeof require && require;
+                    if (!f && c) return c(i, !0);
+                    if (u) return u(i, !0);
+                    var a = new Error("Cannot find module '" + i + "'");
+                    throw a.code = "MODULE_NOT_FOUND", a;
+                }
+                var p = n[i] = {
+                    exports: {}
+                };
+                e[i][0].call(p.exports, function(r) {
+                    var n = e[i][1][r];
+                    return o(n || r);
+                }, p, p.exports, r, e, n, t);
             }
-            var l = n[o] = {
-                exports: {}
-            };
-            t[o][0].call(l.exports, function(e) {
-                var n = t[o][1][e];
-                return s(n ? n : e);
-            }, l, l.exports, e, t, n, r);
+            return n[i].exports;
         }
-        return n[o].exports;
+        for (var u = "function" == typeof require && require, i = 0; i < t.length; i++) o(t[i]);
+        return o;
     }
-    var i = typeof require == "function" && require;
-    for (var o = 0; o < r.length; o++) s(r[o]);
-    return s;
-})({
+    return r;
+})()({
     1: [ function(require, module, exports) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -72,7 +74,7 @@
                         var line = new RegExp("(?:\n|.){0," + properties.start + "}(^.+$)", "m").exec(properties.value)[1];
                         return properties.value.replace(line, "\t" + line);
                     }
-                    var content = this._multiLineIndentation({
+                    var content = keyboardEvents.handlers._multiLineIndentation({
                         start: properties.start,
                         end: properties.end,
                         value: properties.value
@@ -84,7 +86,7 @@
                         var line = new RegExp("(?:\n|.){0," + properties.start + "}(^\t.+$)", "m").exec(properties.value)[1];
                         return properties.value.replace(line, line.substring(1));
                     }
-                    var content = this._multiLineIndentation({
+                    var content = keyboardEvents.handlers._multiLineIndentation({
                         start: properties.start,
                         end: properties.end,
                         value: properties.value
@@ -123,7 +125,7 @@
             return Math.max(parseInt(window.getComputedStyle(element).height), parseInt(element.style.height) || 0);
         }
         function updateHeight(editor) {
-            if (editor.scrollTop) editor.style.height = editor.scrollTop + getHeight(editor) + "px";
+            editor.style.height = editor.scrollHeight + parseInt(getComputedStyle(editor).borderTop) + parseInt(getComputedStyle(editor).borderBottom) + "px";
             return editor;
         }
         var MarkdownX = function(parent, editor, preview) {
@@ -159,6 +161,10 @@
                 }, editorListeners = {
                     object: properties.editor,
                     listeners: [ {
+                        type: "paste",
+                        capture: false,
+                        listener: onPaste
+                    }, {
                         type: "drop",
                         capture: false,
                         listener: onDrop
@@ -170,6 +176,10 @@
                         type: "keydown",
                         capture: true,
                         listener: onKeyDown
+                    }, {
+                        type: "focusin",
+                        capture: true,
+                        listener: inputChanged
                     }, {
                         type: "dragover",
                         capture: false,
@@ -205,6 +215,14 @@
                 properties.editor = properties._editorIsResizable ? updateHeight(properties.editor) : properties.editor;
                 return _markdownify();
             };
+            var onPaste = function(event) {
+                if (event.clipboardData && event.clipboardData.files.length) {
+                    Object.keys(event.clipboardData.files).map(function(fileKey) {
+                        return sendFile(event.clipboardData.files[fileKey]);
+                    });
+                    EventHandlers.inhibitDefault(event);
+                }
+            };
             var onDrop = function(event) {
                 if (event.dataTransfer && event.dataTransfer.files.length) Object.keys(event.dataTransfer.files).map(function(fileKey) {
                     return sendFile(event.dataTransfer.files[fileKey]);
@@ -223,7 +241,26 @@
                 });
                 _markdownify();
                 properties.editor.focus();
-                properties.editor.selectionEnd = properties.editor.selectionStart = SELECTION_START;
+                switch (event.key) {
+                  case keyboardEvents.keys.TAB:
+                    if (event.shiftKey) {
+                        properties.editor.selectionEnd = properties.editor.selectionStart = SELECTION_START - 1;
+                    } else {
+                        properties.editor.selectionEnd = properties.editor.selectionStart = SELECTION_START + 1;
+                    }
+                    break;
+
+                  case keyboardEvents.keys.INDENT:
+                    properties.editor.selectionEnd = properties.editor.selectionStart = SELECTION_START + 1;
+                    break;
+
+                  case keyboardEvents.keys.UNINDENT:
+                    properties.editor.selectionEnd = properties.editor.selectionStart = SELECTION_START - 1;
+                    break;
+
+                  default:
+                    properties.editor.selectionEnd = properties.editor.selectionStart = SELECTION_START;
+                }
                 return false;
             };
             var sendFile = function(file) {
@@ -260,7 +297,7 @@
                 }));
                 xhr.success = function(response) {
                     properties.preview.innerHTML = response;
-                    properties.editor = updateHeight(properties.editor);
+                    properties.editor = properties._editorIsResizable ? updateHeight(properties.editor) : properties.editor;
                     utils_1.triggerCustomEvent("markdownx.update", properties.parent, [ response ]);
                 };
                 xhr.error = function(response) {
@@ -332,17 +369,18 @@
         });
         function getCookie(name) {
             if (document.cookie && document.cookie.length) {
-                var cookies = document.cookie.split(";").filter(function(cookie) {
-                    return cookie.indexOf(name + "=") !== -1;
-                })[0];
-                try {
-                    return decodeURIComponent(cookies.trim().substring(name.length + 1));
-                } catch (e) {
-                    if (e instanceof TypeError) {
-                        console.info('No cookie with key "' + name + '". Wrong name?');
-                        return null;
+                var value = "; " + document.cookie;
+                var parts = value.split("; " + name + "=");
+                if (parts.length === 2) {
+                    try {
+                        return decodeURIComponent(parts.pop().split(";").shift());
+                    } catch (e) {
+                        if (e instanceof TypeError) {
+                            console.info('No cookie with key "' + name + '". Wrong name?');
+                            return null;
+                        }
+                        throw e;
                     }
-                    throw e;
                 }
             }
             return null;

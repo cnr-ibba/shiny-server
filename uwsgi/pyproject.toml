@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "shiny"
+version = "0.1.0"
+description = "Django app for shiny server"
+authors = ["Paolo Cozzi <bunop@libero.it>"]
+license = "GPL-3.0-or-later"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^5.2"
+uwsgi = "^2.0"
+mysqlclient = "^2.0"
+python-decouple = "^3.8"
+django-widget-tweaks = "^1.4"
+django-markdownx = "^4.0"
+pillow = "^10.0"
+ipython = "^8.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest-django = "^4.5"
+coverage = {extras = ["toml"], version = "^7.0"}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

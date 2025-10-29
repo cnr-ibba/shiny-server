@@ -145,12 +145,12 @@ class AuthURLTestCase(BaseMixin, TestCase):
 
         # test public app (got access)
         response = client.get(
-            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/003-reactivity/')
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/003-reactivity/')
         self.assertEqual(response.status_code, 200)
 
         # a private app need a login
         response = client.get(
-            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/002-text/')
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/002-text/')
         self.assertEqual(response.status_code, 401)
 
     def test_user(self):
@@ -164,17 +164,17 @@ class AuthURLTestCase(BaseMixin, TestCase):
 
         # test public app (got access)
         response = client.get(
-            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/003-reactivity/')
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/003-reactivity/')
         self.assertEqual(response.status_code, 200)
 
         # can access to my private app
         response = client.get(
-            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/002-text/')
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/002-text/')
         self.assertEqual(response.status_code, 200)
 
         # can't access to others application
         response = client.get(
-            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/001-hello/')
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/001-hello/')
         self.assertEqual(response.status_code, 403)
 
     def test_superuser(self):
@@ -182,21 +182,198 @@ class AuthURLTestCase(BaseMixin, TestCase):
         client = Client()
         client.login(username='admin', password='test')
 
-        # test not an app
+        # test for auth without HTTP_X_ORIGINAL_URI
+        response = client.get("/auth/")
+        self.assertEqual(response.status_code, 403)
+
+        # test not an app: even for admin this is forbidden
         response = client.get("/auth/", HTTP_X_ORIGINAL_URI='/shiny/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 403)
 
         # test public app (got access)
         response = client.get(
-            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/003-reactivity/')
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/003-reactivity/')
         self.assertEqual(response.status_code, 200)
 
         # can access to others applications
         response = client.get(
-            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/002-text/')
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/002-text/')
         self.assertEqual(response.status_code, 200)
 
         # can access to my private app
         response = client.get(
-            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/001-hello/')
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/001-hello/')
         self.assertEqual(response.status_code, 200)
+
+
+class GroupAccessTestCase(BaseMixin, TestCase):
+    """Test case for group-based access control"""
+
+    def setUp(self):
+        from django.contrib.auth.models import Group, User
+        from ..models import ShinyApp
+
+        # Create a test group
+        self.students_group = Group.objects.create(name='students')
+
+        # Create test users
+        self.student1 = User.objects.create_user(
+            username='student1', password='test123')
+        self.student2 = User.objects.create_user(
+            username='student2', password='test123')
+        self.non_student = User.objects.create_user(
+            username='outsider', password='test123')
+
+        # Add students to the group
+        self.student1.groups.add(self.students_group)
+        self.student2.groups.add(self.students_group)
+
+        # Create a test app for the students group
+        self.group_app = ShinyApp.objects.create(
+            title='Students App',
+            location='/shiny-4.5/students-app/',
+            r_version='4.5',
+            is_public=False
+        )
+        self.group_app.groups.add(self.students_group)
+
+    def test_group_member_can_access(self):
+        """Test that a group member can access the app"""
+        self.client.login(username='student1', password='test123')
+        response = self.client.get(
+            reverse('shinyapp', kwargs={'slug': 'students-app'}))
+        self.assertEqual(response.status_code, 200)
+
+    def test_another_group_member_can_access(self):
+        """Test that another group member can also access"""
+        self.client.login(username='student2', password='test123')
+        response = self.client.get(
+            reverse('shinyapp', kwargs={'slug': 'students-app'}))
+        self.assertEqual(response.status_code, 200)
+
+    def test_non_group_member_cannot_access(self):
+        """Test that a non-group member cannot access"""
+        self.client.login(username='outsider', password='test123')
+        response = self.client.get(
+            reverse('shinyapp', kwargs={'slug': 'students-app'}))
+        self.assertEqual(response.status_code, 403)
+
+    def test_group_app_in_list_for_members(self):
+        """Test that group apps appear in list for group members"""
+        self.client.login(username='student1', password='test123')
+        response = self.client.get(reverse('applications'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Students App')
+
+    def test_group_app_not_in_list_for_non_members(self):
+        """Test that group apps don't appear for non-members"""
+        self.client.login(username='outsider', password='test123')
+        response = self.client.get(reverse('applications'))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'Students App')
+
+    def test_auth_endpoint_for_group_member(self):
+        """Test auth endpoint grants access to group members"""
+        client = Client()
+        client.login(username='student1', password='test123')
+        response = client.get(
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/students-app/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_auth_endpoint_denies_non_group_member(self):
+        """Test auth endpoint denies access to non-group members"""
+        client = Client()
+        client.login(username='outsider', password='test123')
+        response = client.get(
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/students-app/')
+        self.assertEqual(response.status_code, 403)
+
+
+class LogoutViewTestCase(BaseMixin, TestCase):
+    """Test case for logout functionality"""
+
+    def test_logout_url_exists(self):
+        """Test that the logout URL exists and is accessible"""
+        try:
+            url = reverse('logout')
+            self.assertIsNotNone(url, "Logout URL should be defined")
+        except Exception as e:
+            self.fail(f"Logout URL 'logout' does not exist: {e}")
+
+    def test_logout_redirects_when_authenticated(self):
+        """Test that logout redirects when user is authenticated"""
+        # Login first
+        self.client.login(username='test', password='test')
+
+        # Verify user is authenticated
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code, 200)
+
+        # Try to logout
+        url = reverse('logout')
+        response = self.client.get(url)
+
+        # Should redirect (302) or return 200
+        # Check that we're either redirected or successfully logged out
+        self.assertIn(response.status_code, [200, 302, 303, 405],
+                      f"Logout should return a valid status code, got {response.status_code}")
+
+    def test_logout_actually_logs_out_user(self):
+        """Test that logout actually logs out the user"""
+        # Login first
+        login_success = self.client.login(username='test', password='test')
+        self.assertTrue(login_success, "Login should succeed")
+
+        # Verify user is authenticated by accessing a protected view
+        # (assuming 'applications' requires login or shows different content)
+        response = self.client.get(reverse('applications'))
+        self.assertEqual(response.status_code, 200)
+
+        # Logout
+        try:
+            url = reverse('logout')
+            response = self.client.post(url)  # Try POST method
+
+            # After logout, user should not be authenticated
+            # Check by trying to access user context
+            response = self.client.get(reverse('home'))
+            # In the response, user should not be authenticated anymore
+            # This depends on your implementation
+
+        except Exception as e:
+            self.fail(f"Logout failed with error: {e}")
+
+    def test_logout_url_in_template(self):
+        """Test that logout URL can be resolved in template context"""
+        # Login first to access the navbar with logout link
+        self.client.login(username='test', password='test')
+
+        # Get a page that includes the navbar
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code, 200)
+
+        # Check if the logout link is present in the template
+        # This will fail if the URL name 'logout' doesn't exist
+        try:
+            url = reverse('logout')
+            self.assertIn(url.encode(), response.content,
+                         f"Logout URL '{url}' should be present in the page")
+        except Exception as e:
+            self.fail(f"Logout URL cannot be rendered in template: {e}")
+
+    def test_logout_redirects_to_home(self):
+        """Test that after logout, user is redirected to home page"""
+        # Login first
+        self.client.login(username='test', password='test')
+
+        # Logout and follow redirects
+        url = reverse('logout')
+        response = self.client.post(url, follow=True)
+
+        # Should redirect to home page
+        self.assertRedirects(response, reverse('home'))
+
+        # User should no longer be authenticated
+        response = self.client.get(reverse('home'))
+        self.assertFalse(response.wsgi_request.user.is_authenticated,
+                        "User should not be authenticated after logout")

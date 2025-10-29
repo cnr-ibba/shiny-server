@@ -160,14 +160,20 @@ TIME_ZONE = 'Europe/Rome'
 
 USE_I18N = True
 
-USE_L10N = True
-
 USE_TZ = True
 
 # https://docs.djangoproject.com/en/2.2/ref/settings/#login-redirect-url
 # The URL or named URL pattern where requests are redirected after login when
-# the LoginView doesn’t get a next GET parameter.
+# the LoginView doesn't get a next GET parameter.
 LOGIN_REDIRECT_URL = 'applications'
+
+# https://docs.djangoproject.com/en/5.2/ref/settings/#logout-redirect-url
+# The URL or named URL pattern where requests are redirected after logout.
+LOGOUT_REDIRECT_URL = 'home'
+
+# Django 3.2+ requires DEFAULT_AUTO_FIELD to be set
+# https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

@@ -7,13 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/united/bootstrap.min.css" rel="stylesheet" integrity="sha384-bzjLLgZOhgXbSvSc5A9LWWo/mSIYf7U7nFbmYIB2Lgmuiw3vKGJuu+abKoaTx4W6" crossorigin="anonymous">
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 
   <!-- standard custom stylesheet -->
   <link rel="stylesheet" href="{% static 'css/custom.min.css' %}">
 
-  <!-- Place your kit's code here -->
-  <script src="https://kit.fontawesome.com/d6c84aa4ed.js" crossorigin="anonymous"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
 
   <title>
     {% block title %}Base Template Title{% endblock title %}
@@ -56,7 +56,7 @@
               </li>
             {% endif %}
 
-          <li class="nav-item dropdown ml-auto">
+          <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="fas fa-user"></i> {{ user.username }}
             </a>
@@ -64,9 +64,12 @@
               <a class="dropdown-item" href="{% url 'password_change' %}">
                 <i class="fas fa-key"></i> Change password
               </a>
-              <a class="dropdown-item" href="{% url 'logout' %}">
-                <i class="fas fa-sign-out-alt"></i> Log out
-              </a>
+              <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="dropdown-item" style="border: none; background: none; cursor: pointer; text-align: left; width: 100%; padding: 0.25rem 1.5rem;">
+                  <i class="fas fa-sign-out-alt"></i> Log out
+                </button>
+              </form>
             </div>
           </li>
 

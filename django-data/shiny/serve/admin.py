@@ -7,24 +7,95 @@ Created on Tue Mar 24 16:13:40 2020
 """
 
 from django.contrib import admin
+from django.forms import ModelForm
 
 from markdownx.admin import MarkdownxModelAdmin
 
 from .models import ShinyApp
 
 
+class ShinyAppAdminForm(ModelForm):
+    class Meta:
+        model = ShinyApp
+        fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super().clean()
+        r_version = cleaned_data.get('r_version')
+        location = cleaned_data.get('location')
+
+        if r_version and location:
+            expected_prefix = f"/shiny-{r_version}/"
+
+            if not location.startswith(expected_prefix):
+                # Auto-correct the location prefix
+                # remove /shiny-X.X/ prefix if present
+                parts = location.split('/', 3)
+                if len(parts) > 2 and parts[1].startswith('shiny-'):
+                    # Already has shiny prefix, replace it
+                    app_path = parts[2] if len(parts) > 2 else ''
+                    cleaned_data['location'] = f"{expected_prefix}{app_path}"
+                elif not location.startswith('/shiny-'):
+                    # Does not have shiny prefix, add it
+                    location_stripped = location.lstrip('/')
+                    cleaned_data['location'] = f"{expected_prefix}{location_stripped}"
+
+            if not location.endswith('/'):
+                cleaned_data['location'] += '/'
+
+        return cleaned_data
+
+
 class ShinyAppAdmin(MarkdownxModelAdmin):
+    form = ShinyAppAdminForm
     list_display = (
-        'location', 'title', 'slug', 'description', 'is_public',
-        'users_display')
+        'title', 'location', 'r_version', 'is_public', 'slug',
+        'users_display', 'groups_display')
+    list_filter = ('r_version', 'is_public', 'users', 'groups')
+    search_fields = ('title', 'location', 'slug')
 
     prepopulated_fields = {'slug': ('title',)}
+    filter_horizontal = ('users', 'groups')
+
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'slug', 'r_version')
+        }),
+        ('Application Details', {
+            'fields': ('location', 'description', 'thumbnail')
+        }),
+        ('Access Control', {
+            'fields': ('is_public', 'users', 'groups'),
+            'description': 'Control who can access this application. Users can be granted access either individually or through group membership.'
+        }),
+    )
 
     def users_display(self, obj):
         return ", ".join([
             user.username for user in obj.users.all()
         ])
     users_display.short_description = "users"
+
+    def groups_display(self, obj):
+        return ", ".join([
+            group.name for group in obj.groups.all()
+        ])
+    groups_display.short_description = "groups"
+
+    def save_model(self, request, obj, form, change):
+        """Ensure location has correct prefix before saving"""
+        expected_prefix = f"/shiny-{obj.r_version}/"
+        if not obj.location.startswith(expected_prefix):
+            # Auto-correct if necessary
+            parts = obj.location.split('/', 3)
+            if len(parts) > 2 and parts[1].startswith('shiny-'):
+                app_path = parts[2] if len(parts) > 2 else ''
+                obj.location = f"{expected_prefix}{app_path}"
+            else:
+                location_stripped = obj.location.lstrip('/')
+                obj.location = f"{expected_prefix}{location_stripped}"
+
+        super().save_model(request, obj, form, change)
 
 
 # Register your models here.
