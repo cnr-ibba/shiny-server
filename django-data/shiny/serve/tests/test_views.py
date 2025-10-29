@@ -206,6 +206,89 @@ class AuthURLTestCase(BaseMixin, TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+class GroupAccessTestCase(BaseMixin, TestCase):
+    """Test case for group-based access control"""
+
+    def setUp(self):
+        from django.contrib.auth.models import Group, User
+        from ..models import ShinyApp
+
+        # Create a test group
+        self.students_group = Group.objects.create(name='students')
+
+        # Create test users
+        self.student1 = User.objects.create_user(
+            username='student1', password='test123')
+        self.student2 = User.objects.create_user(
+            username='student2', password='test123')
+        self.non_student = User.objects.create_user(
+            username='outsider', password='test123')
+
+        # Add students to the group
+        self.student1.groups.add(self.students_group)
+        self.student2.groups.add(self.students_group)
+
+        # Create a test app for the students group
+        self.group_app = ShinyApp.objects.create(
+            title='Students App',
+            location='/shiny-4.5/students-app/',
+            r_version='4.5',
+            is_public=False
+        )
+        self.group_app.groups.add(self.students_group)
+
+    def test_group_member_can_access(self):
+        """Test that a group member can access the app"""
+        self.client.login(username='student1', password='test123')
+        response = self.client.get(
+            reverse('shinyapp', kwargs={'slug': 'students-app'}))
+        self.assertEqual(response.status_code, 200)
+
+    def test_another_group_member_can_access(self):
+        """Test that another group member can also access"""
+        self.client.login(username='student2', password='test123')
+        response = self.client.get(
+            reverse('shinyapp', kwargs={'slug': 'students-app'}))
+        self.assertEqual(response.status_code, 200)
+
+    def test_non_group_member_cannot_access(self):
+        """Test that a non-group member cannot access"""
+        self.client.login(username='outsider', password='test123')
+        response = self.client.get(
+            reverse('shinyapp', kwargs={'slug': 'students-app'}))
+        self.assertEqual(response.status_code, 403)
+
+    def test_group_app_in_list_for_members(self):
+        """Test that group apps appear in list for group members"""
+        self.client.login(username='student1', password='test123')
+        response = self.client.get(reverse('applications'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Students App')
+
+    def test_group_app_not_in_list_for_non_members(self):
+        """Test that group apps don't appear for non-members"""
+        self.client.login(username='outsider', password='test123')
+        response = self.client.get(reverse('applications'))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'Students App')
+
+    def test_auth_endpoint_for_group_member(self):
+        """Test auth endpoint grants access to group members"""
+        client = Client()
+        client.login(username='student1', password='test123')
+        response = client.get(
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/students-app/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_auth_endpoint_denies_non_group_member(self):
+        """Test auth endpoint denies access to non-group members"""
+        client = Client()
+        client.login(username='outsider', password='test123')
+        response = client.get(
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/students-app/')
+        self.assertEqual(response.status_code, 403)
+
+
 class LogoutViewTestCase(BaseMixin, TestCase):
     """Test case for logout functionality"""
 

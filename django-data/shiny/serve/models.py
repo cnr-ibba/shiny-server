@@ -11,6 +11,7 @@ from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.module_loading import import_string
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.conf import settings
 from django.core.exceptions import ValidationError
 
@@ -57,6 +58,12 @@ class ShinyApp(models.Model):
         related_name="shinyapps",
         blank=True,
         help_text="Users who have access to this application (only relevant if not public)"
+    )
+    groups = models.ManyToManyField(
+        Group,
+        related_name="shinyapps",
+        blank=True,
+        help_text="Groups whose members have access to this application (only relevant if not public)"
     )
     is_public = models.BooleanField(
         default=False,

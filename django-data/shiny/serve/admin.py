@@ -50,12 +50,12 @@ class ShinyAppAdmin(MarkdownxModelAdmin):
     form = ShinyAppAdminForm
     list_display = (
         'title', 'location', 'r_version', 'is_public', 'slug',
-        'users_display')
-    list_filter = ('r_version', 'is_public', 'users')
+        'users_display', 'groups_display')
+    list_filter = ('r_version', 'is_public', 'users', 'groups')
     search_fields = ('title', 'location', 'slug')
 
     prepopulated_fields = {'slug': ('title',)}
-    filter_horizontal = ('users',)
+    filter_horizontal = ('users', 'groups')
 
     fieldsets = (
         ('Basic Information', {
@@ -65,7 +65,8 @@ class ShinyAppAdmin(MarkdownxModelAdmin):
             'fields': ('location', 'description', 'thumbnail')
         }),
         ('Access Control', {
-            'fields': ('is_public', 'users')
+            'fields': ('is_public', 'users', 'groups'),
+            'description': 'Control who can access this application. Users can be granted access either individually or through group membership.'
         }),
     )
 
@@ -74,6 +75,12 @@ class ShinyAppAdmin(MarkdownxModelAdmin):
             user.username for user in obj.users.all()
         ])
     users_display.short_description = "users"
+
+    def groups_display(self, obj):
+        return ", ".join([
+            group.name for group in obj.groups.all()
+        ])
+    groups_display.short_description = "groups"
 
     def save_model(self, request, obj, form, change):
         """Ensure location has correct prefix before saving"""
