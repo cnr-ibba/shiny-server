@@ -40,7 +40,8 @@ class ShinyAppAdminForm(ModelForm):
                     location_stripped = location.lstrip('/')
                     cleaned_data['location'] = f"{expected_prefix}{location_stripped}"
 
-            if not location.endswith('/'):
+            # Ensure trailing slash (check cleaned_data, not original location)
+            if not cleaned_data['location'].endswith('/'):
                 cleaned_data['location'] += '/'
 
         return cleaned_data
@@ -85,6 +86,7 @@ class ShinyAppAdmin(MarkdownxModelAdmin):
     def save_model(self, request, obj, form, change):
         """Ensure location has correct prefix before saving"""
         expected_prefix = f"/shiny-{obj.r_version}/"
+
         if not obj.location.startswith(expected_prefix):
             # Auto-correct if necessary
             parts = obj.location.split('/', 3)
@@ -94,6 +96,10 @@ class ShinyAppAdmin(MarkdownxModelAdmin):
             else:
                 location_stripped = obj.location.lstrip('/')
                 obj.location = f"{expected_prefix}{location_stripped}"
+
+        # Ensure trailing slash
+        if not obj.location.endswith('/'):
+            obj.location += '/'
 
         super().save_model(request, obj, form, change)
 
