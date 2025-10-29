@@ -95,6 +95,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           file: django-data/shiny/coverage.xml
           format: cobertura
+          base-path: django-data/shiny
 
       - name: Cleanup
         if: always()
