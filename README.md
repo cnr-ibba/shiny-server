@@ -26,9 +26,9 @@ Install dependencies
 --------------------
 
 All this stuff works inside a docker compose image and need [docker](https://www.docker.com/)
-and [docker-compose](https://docs.docker.com/compose/) to work. Please refer to
+and [docker compose](https://docs.docker.com/compose/) to work. Please refer to
 the official documentation on how to install [docker](https://docs.docker.com/install/)
-and [docker-compose](https://docs.docker.com/compose/install/)
+and [docker compose](https://docs.docker.com/compose/install/)
 
 Install shiny-server
 --------------------
@@ -54,7 +54,7 @@ shiny application data, database and configuration files.
 
 ### Setting up the environment file
 
-`docker-compose` can read environment variables from a `.env` placed in the working
+`docker compose` can read environment variables from a `.env` placed in the working
 directory in which we can define all variables useful for our containers, like database
 credentials. Edit a new `.env` file in working directory and set values for such
 environment variables accordingly:
@@ -76,14 +76,14 @@ EMAIL_PORT=<your email port address>
 EMAIL_USE_TLS=<set 'True' to use TLS, false otherwise
 ```
 
-### Build the docker-compose suite
+### Build the docker compose suite
 
 In order to build the images according to the `docker-compose.yml` specifications,
 Docker needs download and install all required dependencies; it will need several
 minutes to complete. Launch this command from the working directory:
 
 ```bash
-docker-compose build
+docker compose build
 ```
 
 ### Fixing django permissions
@@ -92,8 +92,8 @@ You will also to check file permissions in `django-data` folder, expecially for 
 folder:
 
 ```bash
-docker-compose run --rm uwsgi sh -c 'chmod -R g+rw media && chmod g+rwx media/thumbnails/'
-docker-compose run --rm uwsgi sh -c 'chgrp -R www-data .'
+docker compose run --rm -u $(id -u):www-data uwsgi sh -c 'chmod -R g+rw media && chmod g+rwx media/thumbnails/'
+docker compose run --rm -u $(id -u):www-data uwsgi sh -c 'chgrp -R www-data .'
 ```
 
 ### Initialize Django tables
@@ -103,11 +103,11 @@ not the default mysql user, but a user valid only in django environment. Moreove
 the django tables need to be defined:
 
 ```bash
-docker-compose run --rm uwsgi python manage.py check
-docker-compose run --rm uwsgi python manage.py migrate
-docker-compose run --rm uwsgi python manage.py makemigrations
-docker-compose run --rm uwsgi python manage.py migrate
-docker-compose run --rm uwsgi python manage.py createsuperuser
+docker compose run --rm -u $(id -u):www-data uwsgi python manage.py check
+docker compose run --rm -u $(id -u):www-data uwsgi python manage.py migrate
+docker compose run --rm -u $(id -u):www-data uwsgi python manage.py makemigrations
+docker compose run --rm -u $(id -u):www-data uwsgi python manage.py migrate
+docker compose run --rm -u $(id -u):www-data uwsgi python manage.py createsuperuser
 ```
 
 The last commands will prompt for a user creation. This will be a new django
@@ -119,7 +119,7 @@ since those will be not stored in `.env` file in `shiny-server` directory.
 Test  your fresh InjectTool installation with:
 
 ```bash
-docker-compose run --rm uwsgi pytest
+docker compose run --rm -u $(id -u):www-data uwsgi pytest
 ```
 
 Start composed image
@@ -130,7 +130,7 @@ Pages are served by an nginx docker container controlled by Docker Compose
 server and django instance. In order to start the application:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 The shiny-server interface is available for a local access through Internet browser
