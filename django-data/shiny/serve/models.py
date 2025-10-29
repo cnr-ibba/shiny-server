@@ -36,7 +36,7 @@ class ShinyApp(models.Model):
     thumbnail = models.ImageField(
         upload_to='thumbnails',
         default='default.png')
-    users = models.ManyToManyField(User, related_name="shinyapps")
+    users = models.ManyToManyField(User, related_name="shinyapps", blank=True)
     is_public = models.BooleanField(default=False)
     r_version = models.CharField(
         max_length=3,

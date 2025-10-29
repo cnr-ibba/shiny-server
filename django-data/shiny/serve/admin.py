@@ -26,6 +26,7 @@ class ShinyAppAdminForm(ModelForm):
 
         if r_version and location:
             expected_prefix = f"/shiny-{r_version}/"
+
             if not location.startswith(expected_prefix):
                 # Auto-correct the location prefix
                 # remove /shiny-X.X/ prefix if present
@@ -39,6 +40,9 @@ class ShinyAppAdminForm(ModelForm):
                     location_stripped = location.lstrip('/')
                     cleaned_data['location'] = f"{expected_prefix}{location_stripped}"
 
+            if not location.endswith('/'):
+                cleaned_data['location'] += '/'
+
         return cleaned_data
 
 
@@ -47,7 +51,7 @@ class ShinyAppAdmin(MarkdownxModelAdmin):
     list_display = (
         'title', 'location', 'r_version', 'is_public', 'slug',
         'users_display')
-    list_filter = ('r_version', 'is_public')
+    list_filter = ('r_version', 'is_public', 'users')
     search_fields = ('title', 'location', 'slug')
 
     prepopulated_fields = {'slug': ('title',)}
