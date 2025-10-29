@@ -71,3 +71,32 @@ code {
   background-color: transparent;
   padding: 0;
 }
+
+/* Responsive iframe styling for Shiny apps
+-------------------------------------------------- */
+.shiny-iframe-container {
+  position: relative;
+  width: 100%;
+  min-height: 600px; // min height for desktop
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .shiny-iframe-container {
+    min-height: 500px; // min height for tablet
+  }
+}
+
+@media (max-width: 576px) {
+  .shiny-iframe-container {
+    min-height: 400px; // min height for mobile
+  }
+}
