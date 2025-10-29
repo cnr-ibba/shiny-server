@@ -145,12 +145,12 @@ class AuthURLTestCase(BaseMixin, TestCase):
 
         # test public app (got access)
         response = client.get(
-            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/003-reactivity/')
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/003-reactivity/')
         self.assertEqual(response.status_code, 200)
 
         # a private app need a login
         response = client.get(
-            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/002-text/')
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/002-text/')
         self.assertEqual(response.status_code, 401)
 
     def test_user(self):
@@ -164,17 +164,17 @@ class AuthURLTestCase(BaseMixin, TestCase):
 
         # test public app (got access)
         response = client.get(
-            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/003-reactivity/')
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/003-reactivity/')
         self.assertEqual(response.status_code, 200)
 
         # can access to my private app
         response = client.get(
-            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/002-text/')
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/002-text/')
         self.assertEqual(response.status_code, 200)
 
         # can't access to others application
         response = client.get(
-            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/001-hello/')
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/001-hello/')
         self.assertEqual(response.status_code, 403)
 
     def test_superuser(self):
@@ -192,15 +192,15 @@ class AuthURLTestCase(BaseMixin, TestCase):
 
         # test public app (got access)
         response = client.get(
-            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/003-reactivity/')
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/003-reactivity/')
         self.assertEqual(response.status_code, 200)
 
         # can access to others applications
         response = client.get(
-            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/002-text/')
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/002-text/')
         self.assertEqual(response.status_code, 200)
 
         # can access to my private app
         response = client.get(
-            "/auth/", HTTP_X_ORIGINAL_URI='/shiny/001-hello/')
+            "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/001-hello/')
         self.assertEqual(response.status_code, 200)

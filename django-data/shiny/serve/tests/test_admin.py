@@ -20,7 +20,7 @@ class AdminTestCase(TestCase):
         self.client = Client()
         self.client.login(username='admin', password='test')
 
-    def test_dictbreedadmin(self):
+    def test_shinyapp_admin_changelist(self):
         url = reverse('admin:serve_shinyapp_changelist')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
