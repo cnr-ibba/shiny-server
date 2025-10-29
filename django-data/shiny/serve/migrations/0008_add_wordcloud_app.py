@@ -5,30 +5,30 @@ from django.db import migrations
 
 def add_wordcloud_app(apps, schema_editor):
     """Add WordCloud application"""
-    ShinyApp = apps.get_model('serve', 'ShinyApp')
+    ShinyApp = apps.get_model("serve", "ShinyApp")
 
     # Create WordCloud app
     ShinyApp.objects.create(
-        location='/shiny-4.5/082-word-cloud/',
-        title='WordCloud',
-        slug='wordcloud',
-        description='A Shiny application that generates word clouds from text input',
+        location="/shiny-4.5/082-word-cloud/",
+        title="WordCloud",
+        slug="wordcloud",
+        description="A Shiny application that generates word clouds from text input",
         is_public=False,
-        r_version='4.5',
-        thumbnail='default.png'
+        r_version="4.5",
+        thumbnail="default.png",
     )
 
 
 def remove_wordcloud_app(apps, schema_editor):
     """Remove WordCloud application"""
-    ShinyApp = apps.get_model('serve', 'ShinyApp')
-    ShinyApp.objects.filter(slug='wordcloud').delete()
+    ShinyApp = apps.get_model("serve", "ShinyApp")
+    ShinyApp.objects.filter(slug="wordcloud").delete()
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('serve', '0007_add_hello_shiny_app'),
+        ("serve", "0007_add_hello_shiny_app"),
     ]
 
     operations = [

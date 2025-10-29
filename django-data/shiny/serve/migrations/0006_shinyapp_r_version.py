@@ -6,13 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('serve', '0005_alter_shinyapp_id'),
+        ("serve", "0005_alter_shinyapp_id"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='shinyapp',
-            name='r_version',
-            field=models.CharField(choices=[('4.0', 'R 4.0'), ('4.5', 'R 4.5')], default='4.5', max_length=3, verbose_name='R Version'),
+            model_name="shinyapp",
+            name="r_version",
+            field=models.CharField(
+                choices=[("4.0", "R 4.0"), ("4.5", "R 4.5")],
+                default="4.5",
+                max_length=3,
+                verbose_name="R Version",
+            ),
         ),
     ]

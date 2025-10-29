@@ -5,30 +5,30 @@ from django.db import migrations
 
 def add_hello_shiny_app(apps, schema_editor):
     """Add Hello Shiny application"""
-    ShinyApp = apps.get_model('serve', 'ShinyApp')
+    ShinyApp = apps.get_model("serve", "ShinyApp")
 
     # Create Hello Shiny app
     ShinyApp.objects.create(
-        location='/shiny-4.5/001-hello/',
-        title='Hello Shiny',
-        slug='hello-shiny',
+        location="/shiny-4.5/001-hello/",
+        title="Hello Shiny",
+        slug="hello-shiny",
         description='A simple "Hello World" Shiny application from https://github.com/rstudio/shiny-examples',
         is_public=True,
-        r_version='4.5',
-        thumbnail='default.png'
+        r_version="4.5",
+        thumbnail="default.png",
     )
 
 
 def remove_hello_shiny_app(apps, schema_editor):
     """Remove Hello Shiny application"""
-    ShinyApp = apps.get_model('serve', 'ShinyApp')
-    ShinyApp.objects.filter(slug='hello-shiny').delete()
+    ShinyApp = apps.get_model("serve", "ShinyApp")
+    ShinyApp.objects.filter(slug="hello-shiny").delete()
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('serve', '0006_shinyapp_r_version'),
+        ("serve", "0006_shinyapp_r_version"),
     ]
 
     operations = [

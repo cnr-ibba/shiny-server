@@ -8,49 +8,80 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('serve', '0010_alter_shinyapp_users'),
+        ("serve", "0010_alter_shinyapp_users"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='shinyapp',
-            name='description',
-            field=markdownx.models.MarkdownxField(blank=True, default='', help_text='Application description (Markdown supported)'),
+            model_name="shinyapp",
+            name="description",
+            field=markdownx.models.MarkdownxField(
+                blank=True,
+                default="",
+                help_text="Application description (Markdown supported)",
+            ),
         ),
         migrations.AlterField(
-            model_name='shinyapp',
-            name='is_public',
-            field=models.BooleanField(default=False, help_text='If checked, the application is accessible to all users without authentication'),
+            model_name="shinyapp",
+            name="is_public",
+            field=models.BooleanField(
+                default=False,
+                help_text="If checked, the application is accessible to all users without authentication",
+            ),
         ),
         migrations.AlterField(
-            model_name='shinyapp',
-            name='location',
-            field=models.CharField(help_text="Application path starting with /shiny-{version}/ (e.g., '/shiny-4.5/001-hello/')", max_length=255, unique=True),
+            model_name="shinyapp",
+            name="location",
+            field=models.CharField(
+                help_text="Application path starting with /shiny-{version}/ (e.g., '/shiny-4.5/001-hello/')",
+                max_length=255,
+                unique=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='shinyapp',
-            name='r_version',
-            field=models.CharField(choices=[('4.0', 'R 4.0'), ('4.5', 'R 4.5')], default='4.5', help_text="R version for this application. Location path must start with '/shiny-{version}/'", max_length=3, verbose_name='R Version'),
+            model_name="shinyapp",
+            name="r_version",
+            field=models.CharField(
+                choices=[("4.0", "R 4.0"), ("4.5", "R 4.5")],
+                default="4.5",
+                help_text="R version for this application. Location path must start with '/shiny-{version}/'",
+                max_length=3,
+                verbose_name="R Version",
+            ),
         ),
         migrations.AlterField(
-            model_name='shinyapp',
-            name='slug',
-            field=models.SlugField(help_text='URL-friendly identifier (auto-generated from title if left blank)', unique=True),
+            model_name="shinyapp",
+            name="slug",
+            field=models.SlugField(
+                help_text="URL-friendly identifier (auto-generated from title if left blank)",
+                unique=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='shinyapp',
-            name='thumbnail',
-            field=models.ImageField(default='default.png', help_text='Thumbnail image for the application (uploaded to media/thumbnails/)', upload_to='thumbnails'),
+            model_name="shinyapp",
+            name="thumbnail",
+            field=models.ImageField(
+                default="default.png",
+                help_text="Thumbnail image for the application (uploaded to media/thumbnails/)",
+                upload_to="thumbnails",
+            ),
         ),
         migrations.AlterField(
-            model_name='shinyapp',
-            name='title',
-            field=models.CharField(help_text='Display name of the Shiny application', max_length=255),
+            model_name="shinyapp",
+            name="title",
+            field=models.CharField(
+                help_text="Display name of the Shiny application", max_length=255
+            ),
         ),
         migrations.AlterField(
-            model_name='shinyapp',
-            name='users',
-            field=models.ManyToManyField(blank=True, help_text='Users who have access to this application (only relevant if not public)', related_name='shinyapps', to=settings.AUTH_USER_MODEL),
+            model_name="shinyapp",
+            name="users",
+            field=models.ManyToManyField(
+                blank=True,
+                help_text="Users who have access to this application (only relevant if not public)",
+                related_name="shinyapps",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

@@ -1,0 +1,102 @@
+name: Django Tests and Coverage
+
+on:
+  push:
+    branches:
+      - master
+      - devel
+    paths:
+      - 'django-data/**'
+      - 'uwsgi/**'
+      - 'docker-compose.yml'
+      - '.github/workflows/django-tests.yml'
+  pull_request:
+    branches:
+      - master
+      - devel
+    paths:
+      - 'django-data/**'
+      - 'uwsgi/**'
+      - 'docker-compose.yml'
+      - '.github/workflows/django-tests.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      DEBUG: False
+      MYSQL_ROOT_PASSWORD: mysql_password
+      SHINY_DATABASE: shiny_database
+      SHINY_USER: shiny_user
+      SHINY_PASSWORD: shiny_password
+      SECRET_KEY: shiny_secret_key_for_testing
+      DEFAULT_FROM_EMAIL: test@example.com
+      EMAIL_HOST: localhost
+      EMAIL_HOST_USER: ""
+      EMAIL_HOST_PASSWORD: ""
+      EMAIL_PORT: 1025
+      EMAIL_USE_TLS: False
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+          cat << EOF > .env
+          DEBUG=${{ env.DEBUG }}
+          MYSQL_ROOT_PASSWORD=${{ env.MYSQL_ROOT_PASSWORD }}
+          SHINY_DATABASE=${{ env.SHINY_DATABASE }}
+          SHINY_USER=${{ env.SHINY_USER }}
+          SHINY_PASSWORD=${{ env.SHINY_PASSWORD }}
+          SECRET_KEY=${{ env.SECRET_KEY }}
+          DEFAULT_FROM_EMAIL=${{ env.DEFAULT_FROM_EMAIL }}
+          ADMINS=Admin:${{ env.DEFAULT_FROM_EMAIL }},Maintainer:${{ env.DEFAULT_FROM_EMAIL }}
+          EMAIL_HOST=${{ env.EMAIL_HOST }}
+          EMAIL_HOST_USER=${{ env.EMAIL_HOST_USER }}
+          EMAIL_HOST_PASSWORD=${{ env.EMAIL_HOST_PASSWORD }}
+          EMAIL_PORT=${{ env.EMAIL_PORT }}
+          EMAIL_USE_TLS=${{ env.EMAIL_USE_TLS }}
+          EOF
+
+      - name: Build and start services
+        run: |
+          docker compose pull db
+          docker compose build uwsgi
+          docker compose up -d db
+          sleep 10
+
+      - name: Setup Django
+        run: |
+          docker compose run --rm -u $(id -u):www-data uwsgi sh -c 'chmod -R g+rw media && chmod -R g+rwx media/thumbnails/'
+          docker compose run --rm -u $(id -u):www-data uwsgi sh -c 'chgrp -R www-data .'
+
+      - name: Check Django configuration
+        run: |
+          docker compose run --rm -u $(id -u):www-data uwsgi python manage.py check
+
+      - name: Run migrations
+        run: |
+          docker compose run --rm -u $(id -u):www-data uwsgi python manage.py migrate
+
+      - name: Run tests with coverage
+        run: |
+          docker compose run --rm -u $(id -u):www-data uwsgi coverage run --source='.' -m pytest
+
+      - name: Generate coverage report
+        run: |
+          docker compose run --rm -u $(id -u):www-data uwsgi coverage xml
+          docker compose run --rm -u $(id -u):www-data uwsgi coverage report
+
+      - name: Upload coverage to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          file: django-data/shiny/coverage.xml
+          format: cobertura
+          base-path: django-data/shiny
+
+      - name: Cleanup
+        if: always()
+        run: docker compose down -v
