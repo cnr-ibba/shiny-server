@@ -18,6 +18,7 @@ on:
       - 'django-data/**'
       - 'uwsgi/**'
       - 'docker-compose.yml'
+      - '.github/workflows/django-tests.yml'
 
 jobs:
   test:
