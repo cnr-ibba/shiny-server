@@ -7,13 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/united/bootstrap.min.css" rel="stylesheet" integrity="sha384-bzjLLgZOhgXbSvSc5A9LWWo/mSIYf7U7nFbmYIB2Lgmuiw3vKGJuu+abKoaTx4W6" crossorigin="anonymous">
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 
   <!-- standard custom stylesheet -->
   <link rel="stylesheet" href="{% static 'css/custom.min.css' %}">
 
-  <!-- Place your kit's code here -->
-  <script src="https://kit.fontawesome.com/d6c84aa4ed.js" crossorigin="anonymous"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
 
   <title>
     {% block title %}Base Template Title{% endblock title %}
