@@ -29,20 +29,45 @@ class ShinyApp(models.Model):
         R_4_0 = '4.0', 'R 4.0'
         R_4_5 = '4.5', 'R 4.5'
 
-    location = models.CharField(max_length=255, unique=True)
-    title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True)
-    description = MarkdownxField(blank=True, default='')
+    location = models.CharField(
+        max_length=255,
+        unique=True,
+        help_text="Application path starting with /shiny-{version}/ (e.g., '/shiny-4.5/001-hello/')"
+    )
+    title = models.CharField(
+        max_length=255,
+        help_text="Display name of the Shiny application"
+    )
+    slug = models.SlugField(
+        unique=True,
+        help_text="URL-friendly identifier (auto-generated from title if left blank)"
+    )
+    description = MarkdownxField(
+        blank=True,
+        default='',
+        help_text="Application description (Markdown supported)"
+    )
     thumbnail = models.ImageField(
         upload_to='thumbnails',
-        default='default.png')
-    users = models.ManyToManyField(User, related_name="shinyapps", blank=True)
-    is_public = models.BooleanField(default=False)
+        default='default.png',
+        help_text="Thumbnail image for the application (uploaded to media/thumbnails/)"
+    )
+    users = models.ManyToManyField(
+        User,
+        related_name="shinyapps",
+        blank=True,
+        help_text="Users who have access to this application (only relevant if not public)"
+    )
+    is_public = models.BooleanField(
+        default=False,
+        help_text="If checked, the application is accessible to all users without authentication"
+    )
     r_version = models.CharField(
         max_length=3,
         choices=RVersion.choices,
         default=RVersion.R_4_5,
-        verbose_name='R Version'
+        verbose_name='R Version',
+        help_text="R version for this application. Location path must start with '/shiny-{version}/'"
     )
 
     def clean(self):
