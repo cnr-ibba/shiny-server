@@ -61,33 +61,33 @@ jobs:
 
       - name: Build and start services
         run: |
-          docker-compose pull db
-          docker-compose build uwsgi
-          docker-compose up -d db
+          docker compose pull db
+          docker compose build uwsgi
+          docker compose up -d db
           sleep 10
 
       - name: Setup Django
         run: |
-          docker-compose run --rm -u $(id -u):www-data uwsgi sh -c 'mkdir -p /var/uwsgi/shiny/media'
-          docker-compose run --rm -u $(id -u):www-data uwsgi sh -c 'chmod -R g+rw media && chmod -R g+rwx media/thumbnails/'
-          docker-compose run --rm -u $(id -u):www-data uwsgi sh -c 'chgrp -R www-data .'
+          docker compose run --rm -u $(id -u):www-data uwsgi sh -c 'mkdir -p /var/uwsgi/shiny/media'
+          docker compose run --rm -u $(id -u):www-data uwsgi sh -c 'chmod -R g+rw media && chmod -R g+rwx media/thumbnails/'
+          docker compose run --rm -u $(id -u):www-data uwsgi sh -c 'chgrp -R www-data .'
 
       - name: Check Django configuration
         run: |
-          docker-compose run --rm -u $(id -u):www-data uwsgi python manage.py check
+          docker compose run --rm -u $(id -u):www-data uwsgi python manage.py check
 
       - name: Run migrations
         run: |
-          docker-compose run --rm -u $(id -u):www-data uwsgi python manage.py migrate
+          docker compose run --rm -u $(id -u):www-data uwsgi python manage.py migrate
 
       - name: Run tests with coverage
         run: |
-          docker-compose run --rm -u $(id -u):www-data uwsgi /root/wait-for-mysql.sh coverage run --source='.' -m pytest
+          docker compose run --rm -u $(id -u):www-data uwsgi /root/wait-for-mysql.sh coverage run --source='.' -m pytest
 
       - name: Generate coverage report
         run: |
-          docker-compose run --rm -u $(id -u):www-data uwsgi coverage xml
-          docker-compose run --rm -u $(id -u):www-data uwsgi coverage report
+          docker compose run --rm -u $(id -u):www-data uwsgi coverage xml
+          docker compose run --rm -u $(id -u):www-data uwsgi coverage report
 
       - name: Upload coverage to Coveralls
         uses: coverallsapp/github-action@v2
@@ -98,4 +98,4 @@ jobs:
 
       - name: Cleanup
         if: always()
-        run: docker-compose down -v
+        run: docker compose down -v
