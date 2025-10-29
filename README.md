@@ -135,3 +135,11 @@ docker compose up -d
 
 The shiny-server interface is available for a local access through Internet browser
 at the URL: `http://localhost:22080/`.
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+
+## Copyright
+
+Copyright (C) 2020-2025 Paolo Cozzi <paolo.cozzi@ibba.cnr.it>
