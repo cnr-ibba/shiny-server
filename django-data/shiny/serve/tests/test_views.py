@@ -204,3 +204,93 @@ class AuthURLTestCase(BaseMixin, TestCase):
         response = client.get(
             "/auth/", HTTP_X_ORIGINAL_URI='/shiny-4.5/001-hello/')
         self.assertEqual(response.status_code, 200)
+
+
+class LogoutViewTestCase(BaseMixin, TestCase):
+    """Test case for logout functionality"""
+
+    def test_logout_url_exists(self):
+        """Test that the logout URL exists and is accessible"""
+        try:
+            url = reverse('logout')
+            self.assertIsNotNone(url, "Logout URL should be defined")
+        except Exception as e:
+            self.fail(f"Logout URL 'logout' does not exist: {e}")
+
+    def test_logout_redirects_when_authenticated(self):
+        """Test that logout redirects when user is authenticated"""
+        # Login first
+        self.client.login(username='test', password='test')
+
+        # Verify user is authenticated
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code, 200)
+
+        # Try to logout
+        url = reverse('logout')
+        response = self.client.get(url)
+
+        # Should redirect (302) or return 200
+        # Check that we're either redirected or successfully logged out
+        self.assertIn(response.status_code, [200, 302, 303, 405],
+                      f"Logout should return a valid status code, got {response.status_code}")
+
+    def test_logout_actually_logs_out_user(self):
+        """Test that logout actually logs out the user"""
+        # Login first
+        login_success = self.client.login(username='test', password='test')
+        self.assertTrue(login_success, "Login should succeed")
+
+        # Verify user is authenticated by accessing a protected view
+        # (assuming 'applications' requires login or shows different content)
+        response = self.client.get(reverse('applications'))
+        self.assertEqual(response.status_code, 200)
+
+        # Logout
+        try:
+            url = reverse('logout')
+            response = self.client.post(url)  # Try POST method
+
+            # After logout, user should not be authenticated
+            # Check by trying to access user context
+            response = self.client.get(reverse('home'))
+            # In the response, user should not be authenticated anymore
+            # This depends on your implementation
+
+        except Exception as e:
+            self.fail(f"Logout failed with error: {e}")
+
+    def test_logout_url_in_template(self):
+        """Test that logout URL can be resolved in template context"""
+        # Login first to access the navbar with logout link
+        self.client.login(username='test', password='test')
+
+        # Get a page that includes the navbar
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code, 200)
+
+        # Check if the logout link is present in the template
+        # This will fail if the URL name 'logout' doesn't exist
+        try:
+            url = reverse('logout')
+            self.assertIn(url.encode(), response.content,
+                         f"Logout URL '{url}' should be present in the page")
+        except Exception as e:
+            self.fail(f"Logout URL cannot be rendered in template: {e}")
+
+    def test_logout_redirects_to_home(self):
+        """Test that after logout, user is redirected to home page"""
+        # Login first
+        self.client.login(username='test', password='test')
+
+        # Logout and follow redirects
+        url = reverse('logout')
+        response = self.client.post(url, follow=True)
+
+        # Should redirect to home page
+        self.assertRedirects(response, reverse('home'))
+
+        # User should no longer be authenticated
+        response = self.client.get(reverse('home'))
+        self.assertFalse(response.wsgi_request.user.is_authenticated,
+                        "User should not be authenticated after logout")

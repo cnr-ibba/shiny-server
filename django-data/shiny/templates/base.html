@@ -64,9 +64,12 @@
               <a class="dropdown-item" href="{% url 'password_change' %}">
                 <i class="fas fa-key"></i> Change password
               </a>
-              <a class="dropdown-item" href="{% url 'logout' %}">
-                <i class="fas fa-sign-out-alt"></i> Log out
-              </a>
+              <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="dropdown-item" style="border: none; background: none; cursor: pointer; text-align: left; width: 100%; padding: 0.25rem 1.5rem;">
+                  <i class="fas fa-sign-out-alt"></i> Log out
+                </button>
+              </form>
             </div>
           </li>
 
