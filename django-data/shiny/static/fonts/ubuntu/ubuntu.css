@@ -1,0 +1,15 @@
+/* Ubuntu Regular (400) */
+@font-face {
+    font-family: 'Ubuntu';
+    font-style: normal;
+    font-weight: 400;
+    src: url('ubuntu-regular.ttf') format('truetype');
+}
+
+/* Ubuntu Bold (700) */
+@font-face {
+    font-family: 'Ubuntu';
+    font-style: normal;
+    font-weight: 700;
+    src: url('ubuntu-bold.ttf') format('truetype');
+}
