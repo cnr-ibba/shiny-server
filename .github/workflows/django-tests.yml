@@ -69,7 +69,6 @@ jobs:
 
       - name: Setup Django
         run: |
-          docker compose run --rm -u $(id -u):www-data uwsgi sh -c 'mkdir -p /var/uwsgi/shiny/media'
           docker compose run --rm -u $(id -u):www-data uwsgi sh -c 'chmod -R g+rw media && chmod -R g+rwx media/thumbnails/'
           docker compose run --rm -u $(id -u):www-data uwsgi sh -c 'chgrp -R www-data .'
 
@@ -83,7 +82,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          docker compose run --rm -u $(id -u):www-data uwsgi /root/wait-for-mysql.sh coverage run --source='.' -m pytest
+          docker compose run --rm -u $(id -u):www-data uwsgi coverage run --source='.' -m pytest
 
       - name: Generate coverage report
         run: |
