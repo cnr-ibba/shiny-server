@@ -185,7 +185,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 MARKDOWNX_MEDIA_PATH = datetime.now().strftime("markdownx/%Y/%m/%d")
 
 # https://neutronx.github.io/django-markdownx/customization/#markdownx_markdownify_function
-MARKDOWNX_MARKDOWNIFY_FUNCTION = "markdownx.utils.markdownify"
+# Use custom markdown rendering with syntax highlighting
+MARKDOWNX_MARKDOWNIFY_FUNCTION = "shiny.markdown_utils.custom_markdownify"
 
 # simply displaying them in the console
 # https://simpleisbetterthancomplex.com/series/2017/09/25/a-complete-beginners-guide-to-django-part-4.html#console-email-backend

@@ -38,3 +38,36 @@ body {
   line-height: $footer-height;
   background-color: $gray-300;
 }
+
+/* Markdown code blocks styling
+-------------------------------------------------- */
+.highlight {
+  background-color: #272822;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.highlight pre {
+  margin: 0;
+  color: #f8f8f2;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+// Inline code styling
+code {
+  background-color: #f4f4f4;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.875em;
+}
+
+// Don't apply inline code style to code inside pre
+.highlight code {
+  background-color: transparent;
+  padding: 0;
+}
