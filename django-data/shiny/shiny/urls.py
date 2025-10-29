@@ -13,18 +13,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
 
-from serve.views import ShinyAppListView, ShinyAppView, auth, IndexView
+from django.contrib import admin
+from django.urls import include, path
+from serve.views import IndexView, ShinyAppListView, ShinyAppView, auth
 
 urlpatterns = [
-    path('', IndexView.as_view(), name="home"),
-    path('auth/', auth),
-    path('admin/', admin.site.urls),
-    path('markdownx/', include('markdownx.urls')),
+    path("", IndexView.as_view(), name="home"),
+    path("auth/", auth),
+    path("admin/", admin.site.urls),
+    path("markdownx/", include("markdownx.urls")),
     # https://docs.djangoproject.com/en/2.2/topics/auth/default/#module-django.contrib.auth.views
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('applications/', ShinyAppListView.as_view(), name="applications"),
-    path('applications/<slug:slug>/', ShinyAppView.as_view(), name='shinyapp'),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("applications/", ShinyAppListView.as_view(), name="applications"),
+    path("applications/<slug:slug>/", ShinyAppView.as_view(), name="shinyapp"),
 ]

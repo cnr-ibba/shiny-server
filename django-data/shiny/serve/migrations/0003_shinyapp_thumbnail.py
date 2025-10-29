@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('serve', '0002_shinyapp_is_public'),
+        ("serve", "0002_shinyapp_is_public"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='shinyapp',
-            name='thumbnail',
-            field=models.ImageField(default='default.png', upload_to='thumbnails'),
+            model_name="shinyapp",
+            name="thumbnail",
+            field=models.ImageField(default="default.png", upload_to="thumbnails"),
         ),
     ]

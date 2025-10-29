@@ -7,14 +7,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('serve', '0009_update_showcase_apps'),
+        ("serve", "0009_update_showcase_apps"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='shinyapp',
-            name='users',
-            field=models.ManyToManyField(blank=True, related_name='shinyapps', to=settings.AUTH_USER_MODEL),
+            model_name="shinyapp",
+            name="users",
+            field=models.ManyToManyField(
+                blank=True, related_name="shinyapps", to=settings.AUTH_USER_MODEL
+            ),
         ),
     ]

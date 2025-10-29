@@ -50,12 +50,12 @@ jobs:
         working-directory: uwsgi
         run: |
           poetry config virtualenvs.in-project true
-          poetry install --with dev
+          poetry install --with dev --no-root
 
       - name: Run flake8
         working-directory: uwsgi
         run: |
-          poetry run flake8 ../django-data/shiny/ --count --statistics --show-source
+          poetry run flake8 ../django-data/shiny/ --config=../django-data/shiny/.flake8 --count --statistics --show-source
 
       - name: Check code formatting with black
         working-directory: uwsgi

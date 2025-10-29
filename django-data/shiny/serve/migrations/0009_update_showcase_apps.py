@@ -1,7 +1,6 @@
 # 0009_update_showcase_apps.py
 from django.db import migrations
 
-
 hello_shiny_description = """
 A simple "Hello World" Shiny application from https://github.com/rstudio/shiny-examples
 
@@ -46,48 +45,48 @@ to be used
 
 def update_helloshiny_app(apps, schema_editor):
     """Update HelloShiny application description"""
-    ShinyApp = apps.get_model('serve', 'ShinyApp')
+    ShinyApp = apps.get_model("serve", "ShinyApp")
 
-    app = ShinyApp.objects.get(slug='hello-shiny')
+    app = ShinyApp.objects.get(slug="hello-shiny")
     app.description = hello_shiny_description
-    app.thumbnail = 'thumbnails/001-hello-shiny.png'
+    app.thumbnail = "thumbnails/001-hello-shiny.png"
     app.save()
 
 
 def revert_helloshiny_app(apps, schema_editor):
     """Revert HelloShiny to old description"""
-    ShinyApp = apps.get_model('serve', 'ShinyApp')
+    ShinyApp = apps.get_model("serve", "ShinyApp")
 
-    app = ShinyApp.objects.get(slug='hello-shiny')
+    app = ShinyApp.objects.get(slug="hello-shiny")
     app.description = 'A simple "Hello World" Shiny application from https://github.com/rstudio/shiny-examples'
-    app.thumbnail = 'default.png'
+    app.thumbnail = "default.png"
     app.save()
 
 
 def update_wordcloud_app(apps, schema_editor):
     """Update WordCloud application description"""
-    ShinyApp = apps.get_model('serve', 'ShinyApp')
+    ShinyApp = apps.get_model("serve", "ShinyApp")
 
-    app = ShinyApp.objects.get(slug='wordcloud')
+    app = ShinyApp.objects.get(slug="wordcloud")
     app.description = wordcloud_description
-    app.thumbnail = 'thumbnails/082-word-cloud.png'
+    app.thumbnail = "thumbnails/082-word-cloud.png"
     app.save()
 
 
 def revert_wordcloud_app(apps, schema_editor):
     """Revert to old description"""
-    ShinyApp = apps.get_model('serve', 'ShinyApp')
+    ShinyApp = apps.get_model("serve", "ShinyApp")
 
-    app = ShinyApp.objects.get(slug='wordcloud')
-    app.description = 'A Shiny application that generates word clouds from text input'
-    app.thumbnail = 'default.png'
+    app = ShinyApp.objects.get(slug="wordcloud")
+    app.description = "A Shiny application that generates word clouds from text input"
+    app.thumbnail = "default.png"
     app.save()
 
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('serve', '0007_add_hello_shiny_app'),
-        ('serve', '0008_add_wordcloud_app'),
+        ("serve", "0007_add_hello_shiny_app"),
+        ("serve", "0008_add_wordcloud_app"),
     ]
 
     operations = [

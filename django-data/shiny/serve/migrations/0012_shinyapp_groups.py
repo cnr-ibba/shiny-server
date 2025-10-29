@@ -6,14 +6,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('auth', '0012_alter_user_first_name_max_length'),
-        ('serve', '0011_alter_shinyapp_description_alter_shinyapp_is_public_and_more'),
+        ("auth", "0012_alter_user_first_name_max_length"),
+        ("serve", "0011_alter_shinyapp_description_alter_shinyapp_is_public_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='shinyapp',
-            name='groups',
-            field=models.ManyToManyField(blank=True, help_text='Groups whose members have access to this application (only relevant if not public)', related_name='shinyapps', to='auth.group'),
+            model_name="shinyapp",
+            name="groups",
+            field=models.ManyToManyField(
+                blank=True,
+                help_text="Groups whose members have access to this application (only relevant if not public)",
+                related_name="shinyapps",
+                to="auth.group",
+            ),
         ),
     ]

@@ -6,8 +6,8 @@ Created on Thu Apr  2 17:56:53 2020
 @author: Paolo Cozzi <paolo.cozzi@ibba.cnr.it>
 """
 
-from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.test import TestCase
 
 from ..models import ShinyApp
 
@@ -25,9 +25,8 @@ class ShinyAppTestCase(TestCase):
 
         # create a shiny app module with R 4.5 (default)
         self.test_app = ShinyApp(
-            location="/shiny-4.5/a/path/",
-            title="Title",
-            description="A description")
+            location="/shiny-4.5/a/path/", title="Title", description="A description"
+        )
 
     def test_save(self):
         self.test_app.save()
@@ -54,18 +53,14 @@ class ShinyAppTestCase(TestCase):
 
         # Test R 4.0 with correct prefix
         app_40 = ShinyApp(
-            location="/shiny-4.0/test/",
-            title="Test R 4.0",
-            r_version="4.0"
+            location="/shiny-4.0/test/", title="Test R 4.0", r_version="4.0"
         )
         app_40.save()  # Should work
         self.assertEqual("4.0", app_40.r_version)
 
         # Test R 4.5 with wrong prefix
         app_wrong = ShinyApp(
-            location="/shiny-4.0/test/",
-            title="Test Wrong",
-            r_version="4.5"
+            location="/shiny-4.0/test/", title="Test Wrong", r_version="4.5"
         )
         with self.assertRaises(ValidationError):
             app_wrong.save()  # Should fail
