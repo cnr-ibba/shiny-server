@@ -6,6 +6,10 @@
 shiny-apps/
 mysql-data/
 
+# exceptions for specific shiny-apps directories
+!shiny-apps/001-hello/
+!shiny-apps/082-word-cloud/
+
 # ignoring media directory
 django-data/shiny/media/
 
