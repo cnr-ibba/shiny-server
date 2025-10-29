@@ -8,7 +8,6 @@ import markdown
 from markdown.extensions.codehilite import CodeHiliteExtension
 from markdown.extensions.fenced_code import FencedCodeExtension
 from markdown.extensions.tables import TableExtension
-from markdown.extensions.nl2br import Nl2BrExtension
 
 
 def custom_markdownify(text):
@@ -30,7 +29,6 @@ def custom_markdownify(text):
                 guess_lang=True,
             ),
             TableExtension(),
-            Nl2BrExtension(),
             "markdown.extensions.extra",
         ]
     )
