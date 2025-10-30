@@ -86,7 +86,7 @@ minutes to complete. Launch this command from the working directory:
 docker compose build
 ```
 
-### Fixing django permissions
+### Fixing permissions
 
 You will also to check file permissions in `django-data` folder, expecially for `media`
 folder:
@@ -94,6 +94,13 @@ folder:
 ```bash
 docker compose run --rm -u $(id -u):www-data uwsgi sh -c 'chmod -R g+rw media && chmod g+rwx media/thumbnails/'
 docker compose run --rm -u $(id -u):www-data uwsgi sh -c 'chgrp -R www-data .'
+```
+
+You may also need to fix permissions for `renv-cache` folder used by R packages
+installation:
+
+```bash
+docker-compose run --rm -u root:root -ti shiny-4.5 sh -c 'chown -R shiny:shiny /srv/renv-cache'
 ```
 
 ### Initialize Django tables

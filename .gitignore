@@ -5,6 +5,7 @@
 # ignoring application directory
 shiny-apps/
 mysql-data/
+renv-cache/
 
 # exceptions for specific shiny-apps directories
 !shiny-apps/001-hello/

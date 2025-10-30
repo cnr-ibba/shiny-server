@@ -13,8 +13,8 @@ services:
         source: shiny-4.5-logs
         target: /var/log/shiny-server/
 
-      - type: volume
-        source: renv-cache
+      - type: bind
+        source: ./renv-cache
         target: /srv/renv-cache
 
       - type: bind
@@ -41,8 +41,8 @@ services:
         source: shiny-4.0-logs
         target: /var/log/shiny-server/
 
-      - type: volume
-        source: renv-cache
+      - type: bind
+        source: ./renv-cache
         target: /srv/renv-cache
 
       - type: bind
@@ -133,4 +133,3 @@ networks:
 volumes:
   shiny-4.0-logs:
   shiny-4.5-logs:
-  renv-cache:
