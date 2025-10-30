@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('serve', '0001_initial'),
+        ("serve", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='shinyapp',
-            name='is_public',
+            model_name="shinyapp",
+            name="is_public",
             field=models.BooleanField(default=False),
         ),
     ]

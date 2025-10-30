@@ -1,0 +1,64 @@
+[tool.poetry]
+name = "shiny"
+version = "0.3.0"
+description = "Django app for shiny server"
+authors = ["Paolo Cozzi <bunop@libero.it>"]
+license = "GPL-3.0-or-later"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^5.2"
+uwsgi = "^2.0"
+mysqlclient = "^2.0"
+python-decouple = "^3.8"
+django-widget-tweaks = "^1.4"
+django-markdownx = "^4.0"
+pillow = "^10.0"
+ipython = "^8.0"
+pygments = "^2.19.2"
+markdown = "^3.9"
+
+[tool.poetry.group.dev.dependencies]
+pytest-django = "^4.5"
+coverage = {extras = ["toml"], version = "^7.0"}
+flake8 = "^7.0"
+black = "^24.0"
+isort = "^5.13"
+pylint = "^3.0"
+pylint-django = "^2.5"
+autopep8 = "^2.3.2"
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+exclude = '''
+/(
+    \.git
+  | \.venv
+  | migrations
+  | __pycache__
+)/
+'''
+
+[tool.isort]
+profile = "black"
+skip_glob = ["*/migrations/*", "*/__pycache__/*"]
+known_django = "django"
+sections = ["FUTURE", "STDLIB", "DJANGO", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+
+[tool.pylint.master]
+load-plugins = "pylint_django"
+django-settings-module = "shiny.settings"
+
+[tool.pylint.messages_control]
+disable = [
+    "missing-docstring",
+    "too-few-public-methods",
+]
+
+[tool.pylint.format]
+max-line-length = 88
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,9 +1,8 @@
 
-version: "3.2"
 services:
-  shiny:
+  shiny-4.5:
     # get image from dockerhub
-    image: bunop/shiny-server_shiny:0.2.2
+    image: bunop/shiny-server_shiny:4.5.1
 
     volumes:
       - type: bind
@@ -11,8 +10,40 @@ services:
         target: /srv/shiny-server/
 
       - type: volume
-        source: shiny-logs
+        source: shiny-4.5-logs
         target: /var/log/shiny-server/
+
+      - type: bind
+        source: ./renv-cache
+        target: /srv/renv-cache
+
+      - type: bind
+        source: ./shiny/shiny-server.conf
+        target: /etc/shiny-server/shiny-server.conf
+
+    # expose the shiny server ports
+    expose:
+      - "3838"
+
+    # auto restart container
+    restart: always
+
+  shiny-4.0:
+    # get image from dockerhub
+    image: bunop/shiny-server_shiny:4.0.5
+
+    volumes:
+      - type: bind
+        source: ./shiny-apps
+        target: /srv/shiny-server/
+
+      - type: volume
+        source: shiny-4.0-logs
+        target: /var/log/shiny-server/
+
+      - type: bind
+        source: ./renv-cache
+        target: /srv/renv-cache
 
       - type: bind
         source: ./shiny/shiny-server.conf
@@ -48,7 +79,7 @@ services:
 
   uwsgi:
     # get image from dockerhub
-    image: bunop/shiny-server_uwsgi:0.2.2
+    image: bunop/shiny-server_uwsgi:5.2
 
     # You can pass multiple environment variables from an external file through
     # to a service’s containers with the ‘env_file’ option
@@ -74,13 +105,14 @@ services:
       - db
 
   nginx:
-    image: "nginx:1.17"
+    image: "nginx:1.29"
 
     ports:
       - "22080:80"
 
     links:
-      - shiny
+      - shiny-4.5
+      - shiny-4.0
       - uwsgi
 
     volumes:
@@ -99,4 +131,5 @@ networks:
   default:
 
 volumes:
-  shiny-logs:
+  shiny-4.0-logs:
+  shiny-4.5-logs:
