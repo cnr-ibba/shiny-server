@@ -1,45 +1,39 @@
 
-Shiny-django authentication
-===========================
+# Shiny server with Django authentication
 
 [![Django Tests](https://github.com/cnr-ibba/shiny-server/actions/workflows/django-tests.yml/badge.svg)](https://github.com/cnr-ibba/shiny-server/actions/workflows/django-tests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/cnr-ibba/shiny-server/badge.svg)](https://coveralls.io/github/cnr-ibba/shiny-server)
 ![GitHub](https://img.shields.io/github/license/cnr-ibba/shiny-server)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/cnr-ibba/shiny-server)
 
-This is an attempt of managing shiny authentication with django starting from
+This is an attempt of managing shiny authentication with Django starting from
 [Django application as an authentication / authorization server for Shiny](http://pawamoy.github.io/2018/03/15/django-auth-server-for-shiny/)
-guide and modifying stuff accordingly. The django template derive from
+guide and modifying stuff accordingly. The Django template derive from
 [this repository](https://github.com/cnr-ibba/dockerfiles/tree/master/compose/django)
-while the shiny specific configuration comes from [here](https://github.com/cnr-ibba/dockerfiles/tree/master/compose/shiny).
+while the shiny specific configuration comes from this [shiny docker-compose](https://github.com/cnr-ibba/dockerfiles/tree/master/compose/shiny)
+project.
 The aim of this project is to provide both free and restricted access to shiny
-applications relying on django authentication system and nginx. Applications could
-be accessed using the django frontend as a container of an iframe application or
+applications relying on Django authentication system and nginx. Applications could
+be accessed using the Django frontend as a container of an iframe application or
 directly by specifying the path of the application. A specific NGINX configuration
-will be responsible to provide access to shiny applications relying on django
+will be responsible to provide access to shiny applications relying on Django
 authentication system.
 
 If you need more information please see our
 [Wiki on GitHub](https://github.com/cnr-ibba/shiny-server/wiki)
 
-Install dependencies
---------------------
+## Install dependencies
 
 All this stuff works inside a docker compose image and need [docker](https://www.docker.com/)
 and [docker compose](https://docs.docker.com/compose/) to work. Please refer to
 the official documentation on how to install [docker](https://docs.docker.com/install/)
 and [docker compose](https://docs.docker.com/compose/install/)
 
-Install shiny-server
---------------------
+## Install shiny-server
 
-The `shiny-server` project is composed by four different docker containers:
-- `db`: a MySQL database which stores information about users credentials
-- `shiny`: a `rocker/shiny` based images with few dependencies installed to render
-  shiny applications
-- `uwsgi`: a Django base image which implements views and authentication system
-- `nginx`: used as a proxy to connect `shiny` and `uwsgi` backends. A special
-  configuration location lets to provide shiny contents to authenticated users
+We have a detailed guide on how to install and configure `shiny-server`: please
+refer to the [Install and Update](https://github.com/cnr-ibba/shiny-server/wiki/Install-and-Update)
+wiki of this project for more details.
 
 Clone this project and enter in project directory:
 
@@ -49,7 +43,7 @@ cd shiny-server
 ```
 
 This location will be referred as **working directory**, since all commands need
-to be launched inside this directory. This directory will also contains all the
+to be launched inside this directory. This directory will also contain all the
 shiny application data, database and configuration files.
 
 ### Setting up the environment file
@@ -86,9 +80,16 @@ minutes to complete. Launch this command from the working directory:
 docker compose build
 ```
 
+> NOTE: those images are pre-built and available on [Docker Hub](https://hub.docker.com).
+> You can collect them directly from there using:
+>
+> ```bash
+> docker compose pull
+> ```
+
 ### Fixing permissions
 
-You will also to check file permissions in `django-data` folder, expecially for `media`
+You will need also to check file permissions in `django-data` folder, especially for `media`
 folder:
 
 ```bash
@@ -106,7 +107,7 @@ docker-compose run --rm -u root:root -ti shiny-4.5 sh -c 'chown -R shiny:shiny /
 ### Initialize Django tables
 
 After inizialization, a new django user with administrative privilges is needed. This is
-not the default mysql user, but a user valid only in django environment. Moreover
+not the default mysql user, but a user valid only in django environment. Moreover,
 the django tables need to be defined:
 
 ```bash
@@ -129,10 +130,9 @@ Test  your fresh InjectTool installation with:
 docker compose run --rm -u $(id -u):www-data uwsgi pytest
 ```
 
-Start composed image
---------------------
+## Start composed images
 
-Pages are served by an nginx docker container controlled by Docker Compose
+Pages are served by a NgINX docker container controlled by Docker Compose
 (see the `docker-compose.yml` file content), which is linked to the shiny
 server and django instance. In order to start the application:
 
