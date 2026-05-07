@@ -15,9 +15,31 @@ on:
     paths:
       - 'uwsgi/**'
       - '.github/workflows/docker-uwsgi.yml'
+  workflow_dispatch:
 
 jobs:
-  build-and-push:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker image (no push)
+      uses: docker/build-push-action@v4
+      with:
+        context: ./uwsgi
+        file: ./uwsgi/Dockerfile
+        push: false
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+  publish:
+    needs: build
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
 
     steps:
@@ -33,14 +55,23 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build and push Docker image
+    - name: Build and push versioned Docker image
       uses: docker/build-push-action@v4
       with:
         context: ./uwsgi
         file: ./uwsgi/Dockerfile
         push: true
-        tags: |
-          ${{ secrets.DOCKERHUB_USERNAME }}/shiny-server_uwsgi:5.2
-          ${{ github.ref == 'refs/heads/master' && format('{0}/shiny-server_uwsgi:latest', secrets.DOCKERHUB_USERNAME) || '' }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/shiny-server_uwsgi:5.2
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Build and push latest Docker image
+      if: github.ref == 'refs/heads/master'
+      uses: docker/build-push-action@v4
+      with:
+        context: ./uwsgi
+        file: ./uwsgi/Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/shiny-server_uwsgi:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max
