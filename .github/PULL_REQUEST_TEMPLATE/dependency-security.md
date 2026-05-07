@@ -4,7 +4,7 @@
 
 - [ ] This PR updates only dependency files and lockfiles.
 - [ ] The updated packages are listed in the PR description.
-- [ ] Security relevance is documented (critical/high/other).
+- [ ] Security relevance is documented (critical/high/medium/low).
 
 ### Validation (required)
 

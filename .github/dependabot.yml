@@ -17,10 +17,6 @@ updates:
           - "version-update:semver-minor"
           - "version-update:semver-major"
     groups:
-      python-security:
-        applies-to: "security-updates"
-        patterns:
-          - "*"
       python-patch:
         applies-to: "version-updates"
         patterns:
@@ -30,7 +26,6 @@ updates:
     labels:
       - "dependencies"
       - "python"
-      - "security"
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -47,10 +42,6 @@ updates:
           - "version-update:semver-minor"
           - "version-update:semver-major"
     groups:
-      actions-security:
-        applies-to: "security-updates"
-        patterns:
-          - "*"
       actions-patch:
         applies-to: "version-updates"
         patterns:
@@ -60,4 +51,3 @@ updates:
     labels:
       - "dependencies"
       - "github-actions"
-      - "security"
