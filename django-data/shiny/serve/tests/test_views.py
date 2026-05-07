@@ -6,6 +6,7 @@ Created on Thu Apr  2 16:40:39 2020
 @author: Paolo Cozzi <paolo.cozzi@ibba.cnr.it>
 """
 
+from django.conf import settings
 from django.test import Client, TestCase
 from django.urls import resolve, reverse
 
@@ -84,8 +85,11 @@ class ShinyAppViewTestCase(BaseMixin, TestCase):
         client = Client()
         response = client.get(url)
 
-        self.assertEqual(response.status_code, 302)
-        self.assertIn("/accounts/login/", response.url)
+        self.assertRedirects(
+            response,
+            f"{settings.LOGIN_URL}?next={url}",
+            fetch_redirect_response=False,
+        )
 
 
 class ShinyAppListViewTestCase(BaseMixin, TestCase):
