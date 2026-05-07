@@ -1,9 +1,9 @@
 
 #
-# VERSION 0.12
+# VERSION 0.13
 # DOCKER-VERSION  28.5.0
 # AUTHOR:         Paolo Cozzi <paolo.cozzi@ibba.cnr.it>
-# DESCRIPTION:    A django container working on LTS django 5.2 on python 3.10 with Poetry
+# DESCRIPTION:    A django container working on LTS django 5.2 on python 3.12 with Poetry
 # TO_BUILD:       docker build --rm -t bunop/shiny-server_uwsgi:latest .
 # TO_TAG:         docker tag bunop/shiny-server_uwsgi:latest bunop/shiny-server_uwsgi:5.2
 #
@@ -16,8 +16,8 @@
 # ARG in build stages
 ARG APP_NAME=shiny
 ARG APP_PATH=/opt/$APP_NAME
-ARG PYTHON_VERSION=3.10
-ARG POETRY_VERSION=2.2.1
+ARG PYTHON_VERSION=3.12
+ARG POETRY_VERSION=2.4.0
 
 FROM python:${PYTHON_VERSION}
 
