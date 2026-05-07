@@ -1,9 +1,11 @@
-[tool.poetry]
+[project]
 name = "shiny"
-version = "0.3.0"
+version = "0.3.1"
 description = "Django app for shiny server"
-authors = ["Paolo Cozzi <bunop@libero.it>"]
+requires-python = ">=3.10,<4.0"
+dynamic = ["dependencies"]
 license = "GPL-3.0-or-later"
+authors = [{ name = "Paolo Cozzi", email = "bunop@libero.it" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
