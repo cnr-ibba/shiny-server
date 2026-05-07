@@ -149,4 +149,4 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 
 ## Copyright
 
-Copyright (C) 2020-2025 Paolo Cozzi <paolo.cozzi@ibba.cnr.it>
+Copyright (C) 2020-2026 Paolo Cozzi <paolo.cozzi@ibba.cnr.it>

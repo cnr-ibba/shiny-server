@@ -1,14 +1,14 @@
 #
-# VERSION 0.7
+# VERSION 0.8
 # DOCKER-VERSION  28.5.0
 # AUTHOR:         Paolo Cozzi <paolo.cozzi@ibba.cnr.it>
 # DESCRIPTION:    A shiny container based on rocker-shiny
-# TO_BUILD:       docker build --build-arg SHINY_BASE=rocker/shiny:4.5.1 --build-arg R_VERSION=4.5.1 -t bunop/shiny-server_shiny:4.5.1 .
+# TO_BUILD:       docker build --build-arg SHINY_BASE=rocker/shiny:4.5.3 --build-arg R_VERSION=4.5.3 -t bunop/shiny-server_shiny:4.5.3 .
 #                 docker build --build-arg SHINY_BASE=rocker/shiny:4.0.5 --build-arg R_VERSION=4.0.5 -t bunop/shiny-server_shiny:4.0.5 .
 #
 
-ARG SHINY_BASE=rocker/shiny:4.5.1
-ARG R_VERSION=4.5.1
+ARG SHINY_BASE=rocker/shiny:4.5.3
+ARG R_VERSION=4.5.3
 
 FROM ${SHINY_BASE}
 
