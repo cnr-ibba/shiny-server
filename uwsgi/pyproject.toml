@@ -15,7 +15,7 @@ django-widget-tweaks = "^1.4"
 django-markdownx = "^4.0"
 pillow = "^12.2"
 ipython = "^8.0"
-pygments = "^2.19.2"
+pygments = "^2.20.0"
 markdown = "^3.9"
 
 [tool.poetry.group.dev.dependencies]
