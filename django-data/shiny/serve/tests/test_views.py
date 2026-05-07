@@ -77,6 +77,16 @@ class ShinyAppViewTestCase(BaseMixin, TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+    def test_get_private_app_anonymous_user(self):
+        url = reverse("shinyapp", kwargs={"slug": "shiny-text"})
+
+        # Anonymous users must not trigger server errors.
+        client = Client()
+        response = client.get(url)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/accounts/login/", response.url)
+
 
 class ShinyAppListViewTestCase(BaseMixin, TestCase):
     def setUp(self):

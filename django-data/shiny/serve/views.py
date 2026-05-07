@@ -40,6 +40,10 @@ class ShinyAppView(UserPassesTestMixin, DetailView):
         if shinyapp.is_public:
             return True
 
+        # Anonymous users can only view public apps.
+        if not self.request.user.is_authenticated:
+            return False
+
         # Check if user is directly assigned
         if self.request.user in shinyapp.users.all():
             return True
