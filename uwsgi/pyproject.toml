@@ -9,9 +9,9 @@ license = "GPL-3.0-or-later"
 python = "^3.10"
 django = "^5.2"
 uwsgi = "^2.0"
-mysqlclient = "^2.0"
+mysqlclient = "^2.2"
 python-decouple = "^3.8"
-django-widget-tweaks = "^1.4"
+django-widget-tweaks = "^1.5"
 django-markdownx = "^4.0"
 pillow = "^12.2"
 ipython = "^8.0"
@@ -20,7 +20,7 @@ markdown = "^3.9"
 
 [tool.poetry.group.dev.dependencies]
 pytest-django = "^4.5"
-coverage = {extras = ["toml"], version = "^7.0"}
+coverage = {extras = ["toml"], version = "^7.6"}
 flake8 = "^7.0"
 black = "^24.0"
 isort = "^5.13"
