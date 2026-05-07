@@ -21,7 +21,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/shiny-server_uwsgi
+      IMAGE_NAME: bunop/shiny-server_uwsgi
       VERSION_TAG: 5.2
 
     steps:

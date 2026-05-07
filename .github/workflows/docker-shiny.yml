@@ -21,7 +21,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/shiny-server_shiny
+      IMAGE_NAME: bunop/shiny-server_shiny
       LATEST_VERSION: 4.5.3
     strategy:
       matrix:
