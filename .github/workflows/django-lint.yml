@@ -27,6 +27,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python
+        id: setup-python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -37,9 +38,9 @@ jobs:
           path: |
             ~/.cache/pypoetry
             uwsgi/.venv
-          key: ${{ runner.os }}-poetry-${{ hashFiles('uwsgi/poetry.lock') }}
+          key: ${{ runner.os }}-py-${{ steps.setup-python.outputs.python-version }}-poetry-${{ hashFiles('uwsgi/poetry.lock') }}
           restore-keys: |
-            ${{ runner.os }}-poetry-
+            ${{ runner.os }}-py-${{ steps.setup-python.outputs.python-version }}-poetry-
 
       - name: Install Poetry
         run: |
@@ -49,7 +50,11 @@ jobs:
       - name: Install dependencies
         working-directory: uwsgi
         run: |
+          which python
+          python --version
           poetry config virtualenvs.in-project true
+          poetry env use "$(python -c 'import sys; print(sys.executable)')"
+          poetry env info
           poetry install --with dev --no-root
 
       - name: Run flake8
