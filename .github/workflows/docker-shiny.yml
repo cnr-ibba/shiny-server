@@ -22,11 +22,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/shiny-server_shiny
-      LATEST_VERSION: 4.5.1
+      LATEST_VERSION: 4.5.3
     strategy:
       matrix:
         include:
-        - version: 4.5.1
+        - version: 4.5.3
         - version: 4.0.5
 
     steps:
@@ -58,6 +58,7 @@ jobs:
         context: ./shiny
         file: ./shiny/Dockerfile
         push: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+        pull: true
         build-args: |
           SHINY_BASE=rocker/shiny:${{ matrix.version }}
           R_VERSION=${{ matrix.version }}

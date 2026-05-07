@@ -2,7 +2,7 @@
 services:
   shiny-4.5:
     # get image from dockerhub
-    image: bunop/shiny-server_shiny:4.5.1
+    image: bunop/shiny-server_shiny:4.5.3
 
     volumes:
       - type: bind
